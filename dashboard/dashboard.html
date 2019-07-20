@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+
+    <title>Justin Brûlotte - Créateur de site web</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <!-- Static navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="mailto:justinbrulotte.programmation@gmail.com"><div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle btn-primary">Engagez-moi</div></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="about.html">À propos de moi</a></li>
+            <li><a href="index.html#works">Mon portfolio</a></li>
+            <li><a href="service.html">Mes services</a></li>
+            <li class="active"><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="http://www.justinbrulotte.com/blog/">Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+	<div id="dashboardwrap">
+	    <div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-lg-offset-3">
+				</div>
+			</div><!-- row -->
+	    </div> <!-- /container -->
+	</div><!-- /aboutwrap -->
+	
+	<div class="container">
+		<div class="row centered mt mb">
+			<div class="col-lg-8 col-lg-offset-2">
+                <h2>DASHBOARD</h2>
+                <p>This is a real time task dashboard build in JS using Trello API. All my task or on my trello board. I am using Getting things done methode.</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3> Voici les projets que je travail avec leur importance</h3><br>
+                        <p id="categorieTaskList"></p>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+        </div>
+		</div><!-- /row -->
+	</div><!-- /container -->
+	
+	<div id="social">
+		<div class="container">
+			<div class="row centered">
+					<a href="https://twitter.com/justin2997"><i class="fa fa-twitter"></i></a>
+					<a href="https://www.linkedin.com/in/justinbrulotte?trk=hp-identity-name"><i class="fa fa-linkedin"></i></a>
+          <a href="https://github.com/Justin2997"><i class="fa fa-github"></i></a>
+			</div><!-- /row -->
+		</div><!-- /container -->
+	</div><!-- /social -->
+
+	<div id="footerwrap">
+		<div class="container">
+			<div class="row centered">
+				<div class="col-lg-4">
+					<p><b>DÉVELOPPEUR, ENTREPRENEUR LIFEHACKER ET ATHLÈTE DE MÉMOIRE</b></p>
+				</div>
+			
+				<div class="col-lg-4">
+					<p>Je suis disponible en ligne ou en personne à Sherbrooke et dans les environs.</p>
+				</div>
+
+				<div class="col-lg-4">
+					<p><a href="mailto:justinbrulotte.programmation@gmail.com">justinbrulotte.programmation@gmail.com</a></p>
+				</div>
+			
+			</div>
+		
+		</div>
+	</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-63545785-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</html>
