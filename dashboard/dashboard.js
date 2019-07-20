@@ -69,6 +69,7 @@ async function getDashboardInfo(key,token, listName){
                 }
                 const numberOfTaskDoneToday = todayTask.length;
                 printCategorieList(labelLists);
+                printTodayTask(numberOfTaskDoneToday, todayTask);
             });
         });
     });
@@ -98,8 +99,18 @@ async function getTrelloListCards(key, token, listId) {
 function printCategorieList(labelLists) {
     var text = "";
     for (i in labelLists){
-        text += "<h4>(" + labelLists[i]["number"] + ") " + labelLists[i]["name"] + "</h4>"; 
+        text += "<h5>(" + labelLists[i]["number"] + ") " + labelLists[i]["name"] + "</h5>"; 
     }
 
     $("#categorieTaskList").html(text);
+}
+
+function printTodayTask(numberOfTaskDoneToday, todayTask) {
+    var text = "";
+    for (i in todayTask){
+        text += "<h5>(" + todayTask[i]["labelName"] + ") " + todayTask[i]["name"] + "</h5>"; 
+    }
+    text += "<br><h5>Total number of task done today : " + numberOfTaskDoneToday + "</h5>" ;
+
+    $("#todayTask").html(text);
 }
