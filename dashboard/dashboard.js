@@ -7,6 +7,15 @@ $(window).on('load', function() {
     getDashboardInfo(key, token, listName);
 })
 
+var sort_by = function(field, reverse, primer){
+    var key = function (x) {return primer ? primer(x[field]) : x[field];};
+    return function (a,b) {
+        var A = key(a), B = key(b);
+        return (((A < B) ? -1 :
+                (A > B) ? +1 : 0)) * [-1,1][+!!reverse];
+    };
+ };
+
 async function getDashboardInfo(key,token, listName){
     getTrelloBoardInfo(key, token).then(info => {
         const id = info["id"];
@@ -97,6 +106,8 @@ async function getTrelloListCards(key, token, listId) {
 }
 
 function printCategorieList(labelLists) {
+    labelLists.sort(sort_by('number', false, parseInt));
+
     var text = "";
     for (i in labelLists){
         text += "<h5>(" + labelLists[i]["number"] + ") " + labelLists[i]["name"] + "</h5>"; 
@@ -106,6 +117,8 @@ function printCategorieList(labelLists) {
 }
 
 function printTodayTask(numberOfTaskDoneToday, todayTask) {
+    todayTask.sort(sort_by('labelName', true, function(a){ return a.toUpperCase() }));
+
     var text = "";
     for (i in todayTask){
         text += "<h5>(" + todayTask[i]["labelName"] + ") " + todayTask[i]["name"] + "</h5>"; 
