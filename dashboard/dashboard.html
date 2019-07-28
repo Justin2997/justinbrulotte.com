@@ -77,11 +77,16 @@
                         <p id="categorieTaskList" class="text-left"></p>
                     </div>
                     <div class="col-md-4">
-                        <h4> This is today done task</h4><br>
+                        <h4> Today done task</h4><br>
                         <p id="todayTask" class="text-left"></p>
                     </div>
                     <div class="col-md-4">
+                        <h4>Activity of the week</h4><br>
 
+                        <button id="authorize_button" style="display: none;">Authorize</button>
+                        <button id="signout_button" style="display: none;">Sign Out</button>
+
+                        <pre id="content" style="white-space: pre-wrap;"></pre>
                     </div>
                 </div>
         </div>
@@ -124,6 +129,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="dashboard.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
   </body>
 
   <script>
