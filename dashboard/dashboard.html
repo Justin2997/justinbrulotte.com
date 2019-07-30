@@ -45,10 +45,10 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="index.html">Accueil</a></li>
-            <li><a href="about.html">À propos de moi</a></li>
-            <li><a href="index.html#works">Mon portfolio</a></li>
-            <li><a href="service.html">Mes services</a></li>
+            <li><a href="../index.html">Accueil</a></li>
+            <li><a href="../about.html">À propos de moi</a></li>
+            <li><a href="../index.html#works">Mon portfolio</a></li>
+            <li><a href="../service.html">Mes services</a></li>
             <li class="active"><a href="dashboard.html">Dashboard</a></li>
             <li><a href="http://www.justinbrulotte.com/blog/">Blog</a></li>
           </ul>
@@ -70,7 +70,7 @@
 		<div class="row centered mt mb">
 			<div class="col-lg-10 col-lg-offset-1">
                 <h2>DASHBOARD</h2>
-                <p>This is a real time task dashboard build in JS using Trello API. All my task or on my trello board. I am using Getting things done methode.</p>
+                <p>This is a real-time task dashboard build in JS using Trello API. All my task or on my Trello board. I am using getting things done method.You can also find my sports activity log with IFFT on a Google Sheets. I retrieve the data with Google Sheets API.</p>
                 <div class="row">
                     <div class="col-md-4">
                         <h4>Number of task by projet</h4><br>
@@ -81,12 +81,13 @@
                         <p id="todayTask" class="text-left"></p>
                     </div>
                     <div class="col-md-4">
-                        <h4>Activity of the week</h4><br>
+                        <h4>Sport activity of the week</h4><br>
 
-                        <button id="authorize_button" style="display: none;">Authorize</button>
-                        <button id="signout_button" style="display: none;">Sign Out</button>
+                        <button id="authorize_button" type="button" class="btn btn-default dropdown-toggle btn-primary" style="display: none;">Authorize</button>
+                        <button id="signout_button" type="button" class="btn btn-default dropdown-toggle btn-primary" style="display: none;">Sign Out</button>
 
-                        <pre id="content" style="white-space: pre-wrap;"></pre>
+                        <p id="average_activity" class="text-left"></p>
+                        <pre id="activity_content"></pre>
                     </div>
                 </div>
         </div>
@@ -96,7 +97,7 @@
 	<div id="social">
 		<div class="container">
 			<div class="row centered">
-					<a href="https://twitter.com/justin2997"><i class="fa fa-twitter"></i></a>
+          <a href="https://medium.com/@justin.brlotte797"><i class="fa fa-medium"></i></a>
 					<a href="https://www.linkedin.com/in/justinbrulotte?trk=hp-identity-name"><i class="fa fa-linkedin"></i></a>
           <a href="https://github.com/Justin2997"><i class="fa fa-github"></i></a>
 			</div><!-- /row -->
