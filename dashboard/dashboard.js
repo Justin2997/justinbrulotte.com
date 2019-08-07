@@ -22,8 +22,8 @@ function handleClientLoad() {
  *  listeners.
  */
 function initClient() {
-    const API_KEY = "AIzaSyC9vcibuupD8VTkcDLC7mwYTLrWcRwqol4";
-    const CLIENT_ID = "579995592859-3ogboqk5n4gc938c64f3qfeip2mbnlgi.apps.googleusercontent.com"; // This is not a commit file
+    const API_KEY = "AIzaSyDRzKqPk_yqcONmN_U9n6NQuJpJMBNcBg4";
+    const CLIENT_ID = "267762412193-7srgjq0vc5h59ssr6ncnsu2em5fkrraq.apps.googleusercontent.com"; // This is not a commit file
     const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
     const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
     
