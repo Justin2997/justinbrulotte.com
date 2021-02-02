@@ -1,0 +1,12 @@
+{
+  "name": "justinbrulotte.com",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Justin2997/justinbrulotte.com.git",
+  "author": "Justin Brûlotte <justin.brlotte797@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "cd dashboard && yarn start",
+    "build": "cd dashboard && yarn build"
+  }
+}
