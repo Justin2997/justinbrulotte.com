@@ -7,7 +7,7 @@ import {
 import Page from 'src/components/Page';
 import Budget from './Budget';
 import LatestOrders from './LatestOrders';
-import LatestProducts from './LatestProducts';
+import LatestProducts from './TodayTasks';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';

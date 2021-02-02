@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { v4 as uuid } from 'uuid';
-import moment from 'moment';
+
 import {
   Box,
   Button,
@@ -14,43 +13,13 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  CircularProgress,
   makeStyles
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-const data = [
-  {
-    id: uuid(),
-    name: 'Dropbox',
-    imageUrl: '/static/images/products/product_1.png',
-    updatedAt: moment().subtract(2, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'Medium Corporation',
-    imageUrl: '/static/images/products/product_2.png',
-    updatedAt: moment().subtract(2, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'Slack',
-    imageUrl: '/static/images/products/product_3.png',
-    updatedAt: moment().subtract(3, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'Lyft',
-    imageUrl: '/static/images/products/product_4.png',
-    updatedAt: moment().subtract(5, 'hours')
-  },
-  {
-    id: uuid(),
-    name: 'GitHub',
-    imageUrl: '/static/images/products/product_5.png',
-    updatedAt: moment().subtract(9, 'hours')
-  }
-];
+import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
 
 const useStyles = makeStyles(({
   root: {
@@ -62,9 +31,25 @@ const useStyles = makeStyles(({
   }
 }));
 
-const LatestProducts = ({ className, ...rest }) => {
+function LatestProducts({ className, ...rest }) {
   const classes = useStyles();
-  const [products] = useState(data);
+
+  const [task] = useTrelloTasks();
+
+  if (task === null) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+        {...rest}
+      >
+        <CardHeader
+          title="Latest Products"
+        />
+        <Divider />
+        <CircularProgress />
+      </Card>
+    );
+  }
 
   return (
     <Card
@@ -72,26 +57,26 @@ const LatestProducts = ({ className, ...rest }) => {
       {...rest}
     >
       <CardHeader
-        subtitle={`${products.length} in total`}
-        title="Latest Products"
+        subtitle={`${task.length} in total`}
+        title="Today Tasks"
       />
       <Divider />
       <List>
-        {products.map((product, i) => (
+        {task.map((product, i) => (
           <ListItem
-            divider={i < products.length - 1}
+            divider={i < product.length - 1}
             key={product.id}
           >
             <ListItemAvatar>
               <img
                 alt="Product"
                 className={classes.image}
-                src={product.imageUrl}
+                src="/static/images/trello_logo.png"
               />
             </ListItemAvatar>
             <ListItemText
               primary={product.name}
-              secondary={`Updated ${product.updatedAt.fromNow()}`}
+              secondary={`${product.labelName.toUpperCase()}`}
             />
             <IconButton
               edge="end"
@@ -119,7 +104,7 @@ const LatestProducts = ({ className, ...rest }) => {
       </Box>
     </Card>
   );
-};
+}
 
 LatestProducts.propTypes = {
   className: PropTypes.string
