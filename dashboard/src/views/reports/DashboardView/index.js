@@ -4,10 +4,13 @@ import {
   Grid,
   makeStyles
 } from '@material-ui/core';
+
+import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
+
 import Page from 'src/components/Page';
-import Budget from './Budget';
+import NumberOfTask from './NumberOfTask';
 import LatestOrders from './LatestOrders';
-import LatestProducts from './TodayTasks';
+import TodayTasks from './TodayTasks';
 import Sales from './Sales';
 import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
@@ -26,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
 
+  const [todayTask, yesterdayTask] = useTrelloTasks();
+
   return (
     <Page
       className={classes.root}
@@ -43,7 +48,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <Budget />
+            <NumberOfTask todayTask={todayTask} yesterdayTask={yesterdayTask} />
           </Grid>
           <Grid
             item
@@ -97,7 +102,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <LatestProducts />
+            <TodayTasks todayTask={todayTask} />
           </Grid>
           <Grid
             item

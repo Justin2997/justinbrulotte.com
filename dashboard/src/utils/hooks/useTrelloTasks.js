@@ -37,6 +37,7 @@ async function getDashboardInfo(key, token, listName) {
   let i;
   const taskInfo = [];
   const todayTask = [];
+  const yesterdayTask = [];
   const labelLists = [];
 
   for (i in cards) {
@@ -65,16 +66,20 @@ async function getDashboardInfo(key, token, listName) {
     if (due != null) {
       const dueDate = new Date(due);
       const todaysDate = new Date();
+      const yesterdayDate = new Date();
+      yesterdayDate.setDate(todaysDate.getDate() - 1);
 
       if (dueDate.setHours(0, 0, 0, 0) === todaysDate.setHours(0, 0, 0, 0)) {
         todayTask.push(obj);
+      } else if (dueDate.setHours(0, 0, 0, 0) === yesterdayDate.setHours(0, 0, 0, 0)) {
+        yesterdayTask.push(obj);
       }
     }
 
     taskInfo.push(obj);
   }
 
-  return todayTask;
+  return [todayTask, yesterdayTask, taskInfo];
 }
 
 export default function useTrelloTasks() {
@@ -82,15 +87,19 @@ export default function useTrelloTasks() {
   const token = 'b248004e920b5267c67937631cb49495dcf7475a757a2762634feb0c21090534';
   const listName = 'Terminer';
 
-  const [taskList, setTaskList] = useState(null);
+  const [todayTask, setTodayTaskList] = useState(null);
+  const [yesterdayTask, setYesterdayTaskList] = useState(null);
+  const [allTask, setAllTaskList] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const task = await getDashboardInfo(key, token, listName);
-      setTaskList(task);
+      const [today, yesterday, all] = await getDashboardInfo(key, token, listName);
+      setTodayTaskList(today);
+      setYesterdayTaskList(yesterday);
+      setAllTaskList(all);
     }
     fetchData();
   }, []);
 
-  return [taskList];
+  return [todayTask, yesterdayTask, allTask];
 }
