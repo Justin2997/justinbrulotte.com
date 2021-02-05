@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -12,17 +12,17 @@ import {
   makeStyles,
   CircularProgress
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import TodayIcon from '@material-ui/icons/Today';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
   },
   avatar: {
-    backgroundColor: colors.red[600],
+    backgroundColor: colors.green[600],
     height: 56,
     width: 56
   },
@@ -49,11 +49,55 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
+const TotalCustomers = ({ className, allTask }) => {
   const classes = useStyles();
 
+  const [thisMonthTask, setThisMonthTask] = useState(null);
+  const [lastMonthTask, setLastMonthTask] = useState(null);
+
+  console.log('allTask', allTask);
+
+  useEffect(() => {
+    if (allTask) {
+      const today = new Date();
+      const lastMonth = new Date();
+      lastMonth.setMonth((today.getMonth() - 1) % 12);
+
+      const thisMonthList = allTask.filter((task) => {
+        const date = new Date(task.due);
+        return (today.getMonth() === date.getMonth());
+      });
+
+      const lastMonthList = allTask.filter((task) => {
+        const date = new Date(task.due);
+        return (lastMonth.getMonth() === date.getMonth());
+      });
+
+      setThisMonthTask(thisMonthList);
+      setLastMonthTask(lastMonthList);
+    }
+  }, [allTask]);
+
+  if (allTask === null || thisMonthTask === null || lastMonthTask === null) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+      >
+        <CardContent>
+          <Grid
+            container
+            justify="space-between"
+            spacing={3}
+          >
+            <CircularProgress />
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  }
+
   function differenceCalculator() {
-    const difference = todayTask.length - yesterdayTask.length;
+    const difference = thisMonthTask.length - lastMonthTask.length;
 
     // Positive
     if (difference > 0) {
@@ -99,24 +143,6 @@ const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
     );
   }
 
-  if (todayTask === null || yesterdayTask === null) {
-    return (
-      <Card
-        className={clsx(classes.root, className)}
-      >
-        <CardContent>
-          <Grid
-            container
-            justify="space-between"
-            spacing={3}
-          >
-            <CircularProgress />
-          </Grid>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -133,18 +159,18 @@ const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
               gutterBottom
               variant="h6"
             >
-              TASK TODAY
+              NUMBER OF TASK THIS MONTH
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              {todayTask.length}
+              {thisMonthTask.length}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <AssignmentTurnedInIcon />
+              <TodayIcon />
             </Avatar>
           </Grid>
         </Grid>
@@ -166,10 +192,9 @@ const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
   );
 };
 
-NumberOfTask.propTypes = {
+TotalCustomers.propTypes = {
   className: PropTypes.string,
-  todayTask: PropTypes.array,
-  yesterdayTask: PropTypes.array,
+  allTask: PropTypes.array
 };
 
-export default NumberOfTask;
+export default TotalCustomers;

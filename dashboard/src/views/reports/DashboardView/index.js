@@ -4,6 +4,7 @@ import {
   Grid,
   makeStyles
 } from '@material-ui/core';
+import useGoogleSheets from 'use-google-sheets';
 
 import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
 
@@ -12,8 +13,8 @@ import NumberOfTask from './NumberOfTask';
 import LatestOrders from './LatestOrders';
 import TodayTasks from './TodayTasks';
 import Sales from './Sales';
-import TasksProgress from './TasksProgress';
-import TotalCustomers from './TotalCustomers';
+import SleepLevel from './SleepLevel';
+import NumberOfTaskByMonth from './NumberOfTaskByMonth';
 import TotalProfit from './TotalProfit';
 import TrafficByDevice from './TrafficByDevice';
 
@@ -29,7 +30,14 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
 
-  const [todayTask, yesterdayTask] = useTrelloTasks();
+  const [todayTask, yesterdayTask, allTask] = useTrelloTasks();
+
+  const { data: fitbitData, loading: fitbitLoading, error: fitbitError } = useGoogleSheets({
+    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    sheetId: process.env.REACT_APP_FITBIT_GOOGLE_SHEETS_ID,
+    sheetsNames: ['Feuille 1'],
+  });
+  if (fitbitError) { console.error(fitbitError); } // TODO: Add error to the user
 
   return (
     <Page
@@ -57,7 +65,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TotalCustomers />
+            <NumberOfTaskByMonth allTask={allTask} />
           </Grid>
           <Grid
             item
@@ -66,7 +74,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TasksProgress />
+            <SleepLevel fitbitData={fitbitData} loading={fitbitLoading} />
           </Grid>
           <Grid
             item

@@ -10,6 +10,7 @@ import {
   LinearProgress,
   Typography,
   makeStyles,
+  CircularProgress,
   colors
 } from '@material-ui/core';
 import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
@@ -25,13 +26,32 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TasksProgress = ({ className, ...rest }) => {
+const SleepLevel = ({ className, fitbitData, loading }) => {
   const classes = useStyles();
+
+  if (loading) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+      >
+        <CardContent>
+          <Grid
+            container
+            justify="space-between"
+            spacing={3}
+          >
+            <CircularProgress />
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  console.log('fitbitData', fitbitData);
 
   return (
     <Card
       className={clsx(classes.root, className)}
-      {...rest}
     >
       <CardContent>
         <Grid
@@ -71,8 +91,10 @@ const TasksProgress = ({ className, ...rest }) => {
   );
 };
 
-TasksProgress.propTypes = {
-  className: PropTypes.string
+SleepLevel.propTypes = {
+  className: PropTypes.string,
+  fitbitData: PropTypes.array,
+  loading: PropTypes.any
 };
 
-export default TasksProgress;
+export default SleepLevel;
