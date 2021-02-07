@@ -16,6 +16,7 @@ import SleepLevel from './SleepLevel';
 import NumberOfTaskByMonth from './NumberOfTaskByMonth';
 import YesterdayTime from './YesterdayTime';
 import TaskReparticion from './TaskReparticion';
+import TaskWeekDistribution from './TaskWeekDistribution';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,16 +92,6 @@ const Dashboard = () => {
           >
             <YesterdayTime rescueTimeData={rescueTimeData} loading={rescueTimeLoading} />
           </Grid>
-          {/* <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <Sales />
-          </Grid> */ }
-
           <Grid
             item
             lg={4}
@@ -118,6 +109,15 @@ const Dashboard = () => {
             xs={12}
           >
             <TodayTasks todayTask={todayTask} />
+          </Grid>
+          <Grid
+            item
+            lg={12}
+            md={12}
+            xl={12}
+            xs={12}
+          >
+            <TaskWeekDistribution allTask={allTask} />
           </Grid>
           {/* <Grid
             item

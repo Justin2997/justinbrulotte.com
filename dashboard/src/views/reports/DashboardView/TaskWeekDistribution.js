@@ -1,43 +1,94 @@
-import React from 'react';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
+import moment from 'moment';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
   Divider,
   useTheme,
   makeStyles,
-  colors
+  colors,
+  CircularProgress,
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const Sales = ({ className, ...rest }) => {
+const TaskWeekDistribution = ({ className, allTask }) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const [thisWeekTask, setThisWeekTask] = useState(null);
+  const [lastWeekTask, setLastWeekTask] = useState(null);
+
+  useEffect(() => {
+    if (allTask) {
+      const today = moment();
+
+      const thisWeekList = allTask.filter((task) => {
+        const date = moment(task.due);
+        return (date.isoWeek() === today.isoWeek());
+      });
+
+      const lastWeekList = allTask.filter((task) => {
+        const date = moment(task.due);
+        return (date.isoWeek() === today.isoWeek() - 1);
+      });
+
+      let index;
+      const thisWeekListByDay = [0, 0, 0, 0, 0, 0, 0];
+      const lastWeekListByDay = [0, 0, 0, 0, 0, 0, 0];
+
+      for (index in thisWeekList) {
+        const task = thisWeekList[index];
+        const date = moment(task.due);
+        thisWeekListByDay[date.day()] = thisWeekListByDay[date.day()] + 1;
+      }
+
+      for (index in lastWeekList) {
+        const task = lastWeekList[index];
+        const date = moment(task.due);
+        lastWeekListByDay[date.day()] = lastWeekListByDay[date.day()] + 1;
+      }
+
+      setThisWeekTask(thisWeekListByDay);
+      setLastWeekTask(lastWeekListByDay);
+    }
+  }, [allTask]);
+
+  if (allTask === null) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+      >
+        <CardContent>
+          <CircularProgress />
+        </CardContent>
+      </Card>
+    );
+  }
 
   const data = {
     datasets: [
       {
         backgroundColor: colors.indigo[500],
-        data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year'
+        data: thisWeekTask,
+        label: 'This week'
       },
       {
         backgroundColor: colors.grey[200],
-        data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year'
+        data: lastWeekTask,
+        label: 'Last week'
       }
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+    labels: ['Saturday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   };
 
   const options = {
@@ -98,19 +149,9 @@ const Sales = ({ className, ...rest }) => {
   return (
     <Card
       className={clsx(classes.root, className)}
-      {...rest}
     >
       <CardHeader
-        action={(
-          <Button
-            endIcon={<ArrowDropDownIcon />}
-            size="small"
-            variant="text"
-          >
-            Last 7 days
-          </Button>
-        )}
-        title="Latest Sales"
+        title="Task Progression in the week"
       />
       <Divider />
       <CardContent>
@@ -124,27 +165,13 @@ const Sales = ({ className, ...rest }) => {
           />
         </Box>
       </CardContent>
-      <Divider />
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-      >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
-        >
-          Overview
-        </Button>
-      </Box>
     </Card>
   );
 };
 
-Sales.propTypes = {
-  className: PropTypes.string
+TaskWeekDistribution.propTypes = {
+  className: PropTypes.string,
+  allTask: PropTypes.array,
 };
 
-export default Sales;
+export default TaskWeekDistribution;

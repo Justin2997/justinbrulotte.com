@@ -182,7 +182,7 @@ const NumberOfTaskByMonth = ({ className, allTask }) => {
             color="textSecondary"
             variant="caption"
           >
-            Since yesterday
+            Since last month
           </Typography>
         </Box>
       </CardContent>
