@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable operator-assignment */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-nested-ternary */
@@ -79,7 +81,30 @@ async function getDashboardInfo(key, token, listName) {
     taskInfo.push(obj);
   }
 
-  return [todayTask, yesterdayTask, taskInfo];
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setMonth((today.getMonth() - 1) % 12);
+
+  const lastLastMonth = new Date();
+  lastLastMonth.setMonth((today.getMonth() - 2) % 12);
+
+  const lastMonthList = taskInfo.filter((task) => {
+    const date = new Date(task.due);
+    return (lastMonth.getMonth() === date.getMonth() || lastLastMonth.getMonth() === date.getMonth());
+  });
+
+  // Number of task in any categorie
+  let e;
+  for (e in lastMonthList) {
+    let t;
+    for (t in labelLists) {
+      if (taskInfo[e].labelName === labelLists[t].name) {
+        labelLists[t].number = labelLists[t].number + 1;
+      }
+    }
+  }
+
+  return [todayTask, yesterdayTask, taskInfo, labelLists];
 }
 
 export default function useTrelloTasks() {
@@ -90,16 +115,18 @@ export default function useTrelloTasks() {
   const [todayTask, setTodayTaskList] = useState(null);
   const [yesterdayTask, setYesterdayTaskList] = useState(null);
   const [allTask, setAllTaskList] = useState(null);
+  const [labelList, setLabelList] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const [today, yesterday, all] = await getDashboardInfo(key, token, listName);
+      const [today, yesterday, all, labelLists] = await getDashboardInfo(key, token, listName);
       setTodayTaskList(today);
       setYesterdayTaskList(yesterday);
       setAllTaskList(all);
+      setLabelList(labelLists);
     }
     fetchData();
   }, []);
 
-  return [todayTask, yesterdayTask, allTask];
+  return [todayTask, yesterdayTask, allTask, labelList];
 }

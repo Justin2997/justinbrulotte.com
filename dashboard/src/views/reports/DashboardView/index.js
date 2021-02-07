@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import {
   Container,
@@ -10,13 +11,11 @@ import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
 
 import Page from 'src/components/Page';
 import NumberOfTask from './NumberOfTask';
-import LatestOrders from './LatestOrders';
 import TodayTasks from './TodayTasks';
-import Sales from './Sales';
 import SleepLevel from './SleepLevel';
 import NumberOfTaskByMonth from './NumberOfTaskByMonth';
-import TotalProfit from './TotalProfit';
-import TrafficByDevice from './TrafficByDevice';
+import YesterdayTime from './YesterdayTime';
+import TaskReparticion from './TaskReparticion';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
 
-  const [todayTask, yesterdayTask, allTask] = useTrelloTasks();
+  const [todayTask, yesterdayTask, allTask, labelLists] = useTrelloTasks();
 
   const { data: fitbitData, loading: fitbitLoading, error: fitbitError } = useGoogleSheets({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -38,6 +37,13 @@ const Dashboard = () => {
     sheetsNames: ['Feuille 1'],
   });
   if (fitbitError) { console.error(fitbitError); } // TODO: Add error to the user
+
+  const { data: rescueTimeData, loading: rescueTimeLoading, error: rescueTimeError } = useGoogleSheets({
+    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    sheetId: process.env.REACT_APP_RESCUETIME_GOOGLE_SHEETS_ID,
+    sheetsNames: ['Feuille 1'],
+  });
+  if (rescueTimeError) { console.error(rescueTimeError); } // TODO: Add error to the user
 
   return (
     <Page
@@ -51,7 +57,7 @@ const Dashboard = () => {
         >
           <Grid
             item
-            lg={3}
+            lg={4}
             sm={6}
             xl={3}
             xs={12}
@@ -60,7 +66,7 @@ const Dashboard = () => {
           </Grid>
           <Grid
             item
-            lg={3}
+            lg={4}
             sm={6}
             xl={3}
             xs={12}
@@ -69,7 +75,7 @@ const Dashboard = () => {
           </Grid>
           <Grid
             item
-            lg={3}
+            lg={4}
             sm={6}
             xl={3}
             xs={12}
@@ -78,14 +84,14 @@ const Dashboard = () => {
           </Grid>
           <Grid
             item
-            lg={3}
+            lg={4}
             sm={6}
             xl={3}
             xs={12}
           >
-            <TotalProfit />
+            <YesterdayTime rescueTimeData={rescueTimeData} loading={rescueTimeLoading} />
           </Grid>
-          <Grid
+          {/* <Grid
             item
             lg={8}
             md={12}
@@ -93,7 +99,8 @@ const Dashboard = () => {
             xs={12}
           >
             <Sales />
-          </Grid>
+          </Grid> */ }
+
           <Grid
             item
             lg={4}
@@ -101,7 +108,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TrafficByDevice />
+            <TaskReparticion labelLists={labelLists} />
           </Grid>
           <Grid
             item
@@ -112,7 +119,7 @@ const Dashboard = () => {
           >
             <TodayTasks todayTask={todayTask} />
           </Grid>
-          <Grid
+          {/* <Grid
             item
             lg={8}
             md={12}
@@ -120,7 +127,7 @@ const Dashboard = () => {
             xs={12}
           >
             <LatestOrders />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

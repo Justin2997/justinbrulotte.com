@@ -49,13 +49,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TotalCustomers = ({ className, allTask }) => {
+const NumberOfTaskByMonth = ({ className, allTask }) => {
   const classes = useStyles();
 
   const [thisMonthTask, setThisMonthTask] = useState(null);
   const [lastMonthTask, setLastMonthTask] = useState(null);
-
-  console.log('allTask', allTask);
 
   useEffect(() => {
     if (allTask) {
@@ -192,9 +190,9 @@ const TotalCustomers = ({ className, allTask }) => {
   );
 };
 
-TotalCustomers.propTypes = {
+NumberOfTaskByMonth.propTypes = {
   className: PropTypes.string,
   allTask: PropTypes.array
 };
 
-export default TotalCustomers;
+export default NumberOfTaskByMonth;

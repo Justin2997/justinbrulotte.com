@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable radix */
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -13,7 +15,7 @@ import {
   CircularProgress,
   colors
 } from '@material-ui/core';
-import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import LocalHotelIcon from '@material-ui/icons/LocalHotel';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,6 +30,7 @@ const useStyles = makeStyles(() => ({
 
 const SleepLevel = ({ className, fitbitData, loading }) => {
   const classes = useStyles();
+  const shouldSleepFor = 7.5 * 3600;
 
   if (loading) {
     return (
@@ -47,8 +50,11 @@ const SleepLevel = ({ className, fitbitData, loading }) => {
     );
   }
 
-  console.log('fitbitData', fitbitData);
-
+  const todaySleep = fitbitData[0].data[fitbitData[0].data.length - 1];
+  let progress = ((((parseInt(todaySleep.Leger) + parseInt(todaySleep.Autre)) / shouldSleepFor) * 100));
+  if (progress > 100) {
+    progress = 100;
+  }
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -65,24 +71,27 @@ const SleepLevel = ({ className, fitbitData, loading }) => {
               gutterBottom
               variant="h6"
             >
-              TASKS PROGRESS
+              SLEEP GOAL
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              75.5%
+              {todaySleep['Leger Time'] }
+              {' Léger / '}
+              {todaySleep['Autre Time'] }
+              {' Profond'}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <InsertChartIcon />
+              <LocalHotelIcon />
             </Avatar>
           </Grid>
         </Grid>
         <Box mt={3}>
           <LinearProgress
-            value={75.5}
+            value={progress}
             variant="determinate"
           />
         </Box>
