@@ -99,9 +99,11 @@ const YesterdayTime = ({ className, rescueTimeData, loading }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <Avatar className={classes.avatar}>
-              <AttachMoneyIcon />
-            </Avatar>
+            <a href="https://blog.rescuetime.com/work-life-balance-study-2019/?utm_source=onboarding&utm_medium=site&utm_campaign=signup_personalization">
+              <Avatar className={classes.avatar}>
+                <AttachMoneyIcon />
+              </Avatar>
+            </a>
           </Grid>
         </Grid>
       </CardContent>

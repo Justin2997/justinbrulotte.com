@@ -28,7 +28,7 @@ const useStyles = makeStyles(({
   }
 }));
 
-function LatestProducts({ className, todayTask }) {
+function YeasterdayTasks({ className, todayTask }) {
   const classes = useStyles();
 
   if (todayTask === null) {
@@ -37,7 +37,7 @@ function LatestProducts({ className, todayTask }) {
         className={clsx(classes.root, className)}
       >
         <CardHeader
-          title="Today Products"
+          title="Yesterday Tasks"
         />
         <Divider />
         <CircularProgress />
@@ -51,7 +51,7 @@ function LatestProducts({ className, todayTask }) {
     >
       <CardHeader
         subtitle={`${todayTask.length} in total`}
-        title={`Today Tasks (${todayTask.length})`}
+        title={`Yesterday Tasks (${todayTask.length})`}
       />
       <Divider />
       <List className={classes.list}>
@@ -78,9 +78,9 @@ function LatestProducts({ className, todayTask }) {
   );
 }
 
-LatestProducts.propTypes = {
+YeasterdayTasks.propTypes = {
   className: PropTypes.string,
   todayTask: PropTypes.array
 };
 
-export default LatestProducts;
+export default YeasterdayTasks;

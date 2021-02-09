@@ -8,6 +8,7 @@ import {
 import useGoogleSheets from 'use-google-sheets';
 
 import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
+import useAllStravaActivity from 'src/utils/hooks/useAllStravaActivity';
 
 import Page from 'src/components/Page';
 import NumberOfTask from './NumberOfTask';
@@ -17,6 +18,8 @@ import NumberOfTaskByMonth from './NumberOfTaskByMonth';
 import YesterdayTime from './YesterdayTime';
 import TaskReparticion from './TaskReparticion';
 import TaskWeekDistribution from './TaskWeekDistribution';
+import SportOfTheMonth from './SportOfTheMonth';
+import YeasterdayTasks from './YeasterdayTasks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +34,7 @@ const Dashboard = () => {
   const classes = useStyles();
 
   const [todayTask, yesterdayTask, allTask, labelLists] = useTrelloTasks();
+  const [stravaActivities, stravaLoading] = useAllStravaActivity();
 
   const { data: fitbitData, loading: fitbitLoading, error: fitbitError } = useGoogleSheets({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -99,7 +103,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TaskReparticion labelLists={labelLists} />
+            <TodayTasks todayTask={todayTask} />
           </Grid>
           <Grid
             item
@@ -108,7 +112,25 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TodayTasks todayTask={todayTask} />
+            <YeasterdayTasks todayTask={yesterdayTask} />
+          </Grid>
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xl={3}
+            xs={12}
+          >
+            <SportOfTheMonth stravaActivities={stravaActivities} loading={stravaLoading} />
+          </Grid>
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xl={3}
+            xs={12}
+          >
+            <TaskReparticion labelLists={labelLists} />
           </Grid>
           <Grid
             item
