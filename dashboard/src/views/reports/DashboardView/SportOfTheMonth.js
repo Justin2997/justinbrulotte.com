@@ -54,7 +54,7 @@ function SportOfTheMonth({ className, stravaActivities, loading }) {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        title={`This month sports ${stravaActivities.length}`}
+        title={`This month sports (${stravaActivities.length})`}
       />
       <Divider />
       <List className={classes.list}>
@@ -74,7 +74,7 @@ function SportOfTheMonth({ className, stravaActivities, loading }) {
             </ListItemAvatar>
             <ListItemText
               primary={activity.name}
-              secondary={`${activity.date}`}
+              secondary={`${activity.date} - ${activity.string_time}`}
             />
           </ListItem>
         ))}

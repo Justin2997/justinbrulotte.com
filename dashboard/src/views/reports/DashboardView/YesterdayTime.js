@@ -13,7 +13,7 @@ import {
   CircularProgress,
   colors
 } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import AvTimerIcon from '@material-ui/icons/AvTimer';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -76,7 +76,7 @@ const YesterdayTime = ({ className, rescueTimeData, loading }) => {
               gutterBottom
               variant="h6"
             >
-              COMPUTER TIME
+              YESTERDAY COMPUTER TIME
             </Typography>
             <Typography
               color="textPrimary"
@@ -101,7 +101,7 @@ const YesterdayTime = ({ className, rescueTimeData, loading }) => {
           <Grid item>
             <a href="https://blog.rescuetime.com/work-life-balance-study-2019/?utm_source=onboarding&utm_medium=site&utm_campaign=signup_personalization">
               <Avatar className={classes.avatar}>
-                <AttachMoneyIcon />
+                <AvTimerIcon />
               </Avatar>
             </a>
           </Grid>
