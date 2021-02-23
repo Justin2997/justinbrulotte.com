@@ -33,8 +33,6 @@ const useStyles = makeStyles(({
 function SportOfTheMonth({ className, stravaActivities, loading }) {
   const classes = useStyles();
 
-  console.log(stravaActivities);
-
   if (stravaActivities === null || loading) {
     return (
       <Card

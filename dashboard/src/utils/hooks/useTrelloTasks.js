@@ -112,6 +112,8 @@ export default function useTrelloTasks() {
   const token = 'b248004e920b5267c67937631cb49495dcf7475a757a2762634feb0c21090534';
   const listName = 'Terminer';
 
+  const [counter, setCounter] = useState(0);
+
   const [todayTask, setTodayTaskList] = useState(null);
   const [yesterdayTask, setYesterdayTaskList] = useState(null);
   const [allTask, setAllTaskList] = useState(null);
@@ -125,8 +127,14 @@ export default function useTrelloTasks() {
       setAllTaskList(all);
       setLabelList(labelLists);
     }
+
+    const timeout = setTimeout(() => {
+      setCounter(counter + 1);
+    }, 10000);
+
     fetchData();
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [counter]);
 
   return [todayTask, yesterdayTask, allTask, labelList];
 }
