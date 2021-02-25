@@ -1,7 +1,10 @@
 /* eslint-disable max-len */
 import React from 'react';
 import {
+  Typography,
   Container,
+  CardContent,
+  Card,
   Grid,
   makeStyles
 } from '@material-ui/core';
@@ -60,6 +63,39 @@ const Dashboard = () => {
           container
           spacing={3}
         >
+          <Grid
+            item
+            lg={12}
+            sm={12}
+            xl={12}
+            xs={12}
+          >
+            <Card>
+              <CardContent>
+                <Grid
+                  container
+                  justify="space-between"
+                  spacing={3}
+                >
+                  <Grid item>
+                    <Typography
+                      color="textSecondary"
+                      gutterBottom
+                      variant="h6"
+                    >
+                      JUSTIN ACTIVITIES
+                    </Typography>
+                    <Typography
+                      color="textPrimary"
+                      variant="body1"
+                    >
+                      This is a regroupement of all Justin Brulotte data. Build with Google Sheets as Database, React as Frondend and IFTT as event tracking.
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
           <Grid
             item
             lg={4}
@@ -134,7 +170,7 @@ const Dashboard = () => {
           </Grid>
           <Grid
             item
-            lg={12}
+            lg={4}
             md={12}
             xl={12}
             xs={12}
