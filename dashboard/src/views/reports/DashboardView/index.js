@@ -89,7 +89,23 @@ const Dashboard = () => {
                       color="textPrimary"
                       variant="body1"
                     >
-                      This is a regroupement of all Justin Brulotte data. Build with Google Sheets as Database, React as Frondend and IFTT as event tracking.
+                      This is a regroupement of all Justin data. Build with
+                      {' '}
+                      <b>Google Sheets</b>
+                      {' '}
+                      as Database,
+                      {' '}
+                      <b>React</b>
+                      {' '}
+                      as Frondend,
+                      {' '}
+                      <b>IFTT</b>
+                      {' '}
+                      as event tracking and
+                      {' '}
+                      <b>Auth0</b>
+                      {' '}
+                      as auth service.
                     </Typography>
                   </Grid>
                 </Grid>

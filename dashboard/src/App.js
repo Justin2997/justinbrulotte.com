@@ -12,7 +12,7 @@ const App = () => {
   const routing = useRoutes(routes);
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
-  if (!isAuthenticated || !isLoading) {
+  if (!isAuthenticated && !isLoading) {
     loginWithRedirect();
     return (<CircularProgress>Loading ...</CircularProgress>);
   }

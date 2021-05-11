@@ -5,6 +5,7 @@
 /* eslint-disable no-nested-ternary */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { v4 as uuid } from 'uuid';
 
 async function getTrelloBoardInfo(key, token) {
@@ -107,10 +108,32 @@ async function getDashboardInfo(key, token, listName) {
   return [todayTask, yesterdayTask, taskInfo, labelLists];
 }
 
+function hidePrivateInformation(taskList, user) {
+  console.log('user', user);
+
+  if (user && user.email === 'justin.brlotte797@gmail.com' && user.email_verified) {
+    return taskList;
+  }
+
+  let index;
+  const finalTaskArray = [];
+  for (index in taskList) {
+    const task = taskList[index];
+    if (task.labelName.toUpperCase() === 'SERVICE NOW') {
+      task.name = 'Private Task';
+    }
+    finalTaskArray.push(task);
+  }
+
+  return finalTaskArray;
+}
+
 export default function useTrelloTasks() {
   const key = '2d09225b4af4e24c609c28f61841788e';
   const token = 'b248004e920b5267c67937631cb49495dcf7475a757a2762634feb0c21090534';
   const listName = 'Terminer';
+
+  const { user } = useAuth0();
 
   const [counter, setCounter] = useState(0);
 
@@ -122,8 +145,8 @@ export default function useTrelloTasks() {
   useEffect(() => {
     async function fetchData() {
       const [today, yesterday, all, labelLists] = await getDashboardInfo(key, token, listName);
-      setTodayTaskList(today);
-      setYesterdayTaskList(yesterday);
+      setTodayTaskList(hidePrivateInformation(today, user));
+      setYesterdayTaskList(hidePrivateInformation(yesterday, user));
       setAllTaskList(all);
       setLabelList(labelLists);
     }
