@@ -23,6 +23,7 @@ import TaskReparticion from './TaskReparticion';
 import TaskWeekDistribution from './TaskWeekDistribution';
 import SportOfTheMonth from './SportOfTheMonth';
 import YeasterdayTasks from './YeasterdayTasks';
+import WeekGoals from './WeekGoals';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
 
-  const [todayTask, yesterdayTask, allTask, labelLists] = useTrelloTasks();
+  const [todayTask, yesterdayTask, allTask, labelLists, weekGoals] = useTrelloTasks();
   const [stravaActivities, stravaLoading] = useAllStravaActivity();
 
   const { data: fitbitData, loading: fitbitLoading, error: fitbitError } = useGoogleSheets({
@@ -101,11 +102,15 @@ const Dashboard = () => {
                       {' '}
                       <b>IFTT</b>
                       {' '}
-                      as event tracking and
+                      as event tracking,
                       {' '}
                       <b>Auth0</b>
                       {' '}
-                      as auth service.
+                      as auth service,
+                      {' '}
+                      <b>Netlify</b>
+                      {' '}
+                      for continuous delivery.
                     </Typography>
                   </Grid>
                 </Grid>
@@ -147,6 +152,15 @@ const Dashboard = () => {
             xs={12}
           >
             <YesterdayTime rescueTimeData={rescueTimeData} loading={rescueTimeLoading} />
+          </Grid>
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xl={3}
+            xs={12}
+          >
+            <WeekGoals goals={weekGoals} />
           </Grid>
           <Grid
             item

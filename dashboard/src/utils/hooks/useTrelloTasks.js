@@ -25,8 +25,29 @@ async function getTrelloBoardLists(key, token) {
 async function getTrelloListCards(key, token, listId) {
   const url = `https://api.trello.com/1/lists/${listId}/cards/?key=${key}&token=${token}`;
   const data = await axios.get(url);
-
   return data.data;
+}
+
+async function getTrelloListCardsForName(key, token, listName) {
+  const boardLists = await getTrelloBoardLists(key, token);
+  const doneListId = boardLists.find((element) => element.name === listName).id;
+  const cards = await getTrelloListCards(key, token, doneListId);
+
+  let i;
+  const weekList = [];
+  for (i in cards) {
+    const {
+      dateLastActivity, shortUrl, due, name
+    } = cards[i];
+    const label = cards[i].labels[0];
+
+    const obj = {
+      id: uuid(), name, labelName: label.name, dateLastActivity, due, shortUrl
+    };
+    weekList.push(obj);
+  }
+
+  return weekList;
 }
 
 async function getDashboardInfo(key, token, listName) {
@@ -109,8 +130,6 @@ async function getDashboardInfo(key, token, listName) {
 }
 
 function hidePrivateInformation(taskList, user) {
-  console.log('user', user);
-
   if (user && user.email === 'justin.brlotte797@gmail.com' && user.email_verified) {
     return taskList;
   }
@@ -131,7 +150,9 @@ function hidePrivateInformation(taskList, user) {
 export default function useTrelloTasks() {
   const key = '2d09225b4af4e24c609c28f61841788e';
   const token = 'b248004e920b5267c67937631cb49495dcf7475a757a2762634feb0c21090534';
-  const listName = 'Terminer';
+
+  const finishListName = 'Terminer';
+  const weekGoalsListName = 'Semaine (Top 3)';
 
   const { user } = useAuth0();
 
@@ -141,14 +162,18 @@ export default function useTrelloTasks() {
   const [yesterdayTask, setYesterdayTaskList] = useState(null);
   const [allTask, setAllTaskList] = useState(null);
   const [labelList, setLabelList] = useState(null);
+  const [weekGoals, setWeekGoals] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const [today, yesterday, all, labelLists] = await getDashboardInfo(key, token, listName);
+      const [today, yesterday, all, labelLists] = await getDashboardInfo(key, token, finishListName);
+      const goals = await getTrelloListCardsForName(key, token, weekGoalsListName);
+
       setTodayTaskList(hidePrivateInformation(today, user));
       setYesterdayTaskList(hidePrivateInformation(yesterday, user));
       setAllTaskList(all);
       setLabelList(labelLists);
+      setWeekGoals(goals);
     }
 
     const timeout = setTimeout(() => {
@@ -159,5 +184,5 @@ export default function useTrelloTasks() {
     return () => clearTimeout(timeout);
   }, [counter]);
 
-  return [todayTask, yesterdayTask, allTask, labelList];
+  return [todayTask, yesterdayTask, allTask, labelList, weekGoals];
 }

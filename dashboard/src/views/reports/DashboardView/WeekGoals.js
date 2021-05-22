@@ -28,16 +28,16 @@ const useStyles = makeStyles(({
   }
 }));
 
-function TodayTasks({ className, todayTask }) {
+function WeekGoals({ className, goals }) {
   const classes = useStyles();
 
-  if (todayTask === null) {
+  if (goals === null) {
     return (
       <Card
         className={clsx(classes.root, className)}
       >
         <CardHeader
-          title="Today Products"
+          title="Week Goals"
         />
         <Divider />
         <CircularProgress />
@@ -45,31 +45,33 @@ function TodayTasks({ className, todayTask }) {
     );
   }
 
+  console.log('goals', goals);
+
   return (
     <Card
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        subtitle={`${todayTask.length} in total`}
-        title={`Today Tasks (${todayTask.length})`}
+        subtitle={`${goals.length} in total`}
+        title={`Week Goals (${goals.length})`}
       />
       <Divider />
       <List className={classes.list}>
-        {todayTask.map((product, i) => (
+        {goals.map((goal, i) => (
           <ListItem
-            divider={i < product.length - 1}
-            key={product.id}
+            divider={i < goal.length - 1}
+            key={goal.id}
           >
             <ListItemAvatar>
               <img
-                alt="Product"
+                alt="weekGoals"
                 className={classes.image}
-                src="/static/images/trello_logo.png"
+                src="/static/images/goals.png"
               />
             </ListItemAvatar>
             <ListItemText
-              primary={product.name}
-              secondary={`${product.labelName.toUpperCase()}`}
+              primary={goal.name}
+              secondary={`${goal.labelName.toUpperCase()}`}
             />
           </ListItem>
         ))}
@@ -78,9 +80,9 @@ function TodayTasks({ className, todayTask }) {
   );
 }
 
-TodayTasks.propTypes = {
+WeekGoals.propTypes = {
   className: PropTypes.string,
-  todayTask: PropTypes.array
+  goals: PropTypes.array
 };
 
-export default TodayTasks;
+export default WeekGoals;
