@@ -1,18 +1,19 @@
 import React from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
 import {
   Card,
   CardHeader,
   Divider,
+  CircularProgress,
+  makeStyles,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
-  CircularProgress,
-  makeStyles
+  ListItemText
 } from '@material-ui/core';
+
+import useWeather from 'src/utils/hooks/useWeather';
 
 const useStyles = makeStyles(({
   root: {
@@ -28,16 +29,16 @@ const useStyles = makeStyles(({
   }
 }));
 
-function WeekGoals({ className, goals }) {
+function WeekWeather({ city }) {
   const classes = useStyles();
 
-  if (goals === null) {
+  const [weekWeather] = useWeather(city);
+
+  if (weekWeather === []) {
     return (
-      <Card
-        className={clsx(classes.root, className)}
-      >
+      <Card>
         <CardHeader
-          title="Week Goals"
+          title="Week Weather"
         />
         <Divider />
         <CircularProgress />
@@ -46,30 +47,28 @@ function WeekGoals({ className, goals }) {
   }
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-    >
+    <Card>
       <CardHeader
-        subtitle={`${goals.length} in total`}
-        title={`Week Goals (${goals.length})`}
+        subtitle={`${weekWeather.length} in total`}
+        title="Next 5 day weather"
       />
       <Divider />
       <List className={classes.list}>
-        {goals.map((goal, i) => (
+        {weekWeather.map((timeWeather, i) => (
           <ListItem
-            divider={i < goal.length - 1}
-            key={goal.id}
+            divider={i < timeWeather.length - 1}
+            key={timeWeather.id}
           >
             <ListItemAvatar>
               <img
-                alt="weekGoals"
+                alt={timeWeather.type}
                 className={classes.image}
-                src="/static/images/goals.png"
+                src={timeWeather.icon}
               />
             </ListItemAvatar>
             <ListItemText
-              primary={goal.name}
-              secondary={`${goal.labelName.toUpperCase()}`}
+              primary={`${timeWeather.type.toUpperCase()} - ${timeWeather.temperature}°C`}
+              secondary={`${timeWeather.date.toUpperCase()}`}
             />
           </ListItem>
         ))}
@@ -78,9 +77,8 @@ function WeekGoals({ className, goals }) {
   );
 }
 
-WeekGoals.propTypes = {
-  className: PropTypes.string,
-  goals: PropTypes.array
+WeekWeather.propTypes = {
+  city: PropTypes.string
 };
 
-export default WeekGoals;
+export default WeekWeather;

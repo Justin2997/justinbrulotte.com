@@ -24,6 +24,7 @@ import TaskWeekDistribution from './TaskWeekDistribution';
 import SportOfTheMonth from './SportOfTheMonth';
 import YeasterdayTasks from './YeasterdayTasks';
 import WeekGoals from './WeekGoals';
+import WeekWeather from './WeekWeather';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -200,22 +201,22 @@ const Dashboard = () => {
           </Grid>
           <Grid
             item
-            lg={4}
+            lg={12}
+            md={12}
+            xl={9}
+            xs={12}
+          >
+            <WeekWeather city="Sherbrooke" />
+          </Grid>
+          <Grid
+            item
+            lg={12}
             md={12}
             xl={12}
             xs={12}
           >
             <TaskWeekDistribution allTask={allTask} />
           </Grid>
-          {/* <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <LatestOrders />
-          </Grid> */}
         </Grid>
       </Container>
     </Page>
