@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,32 +7,13 @@ import {
   CardHeader,
   Divider,
   CircularProgress,
-  makeStyles,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText
 } from '@material-ui/core';
 
 import useWeather from 'src/utils/hooks/useWeather';
 
-const useStyles = makeStyles(({
-  root: {
-    height: '100%'
-  },
-  image: {
-    height: 48,
-    width: 48
-  },
-  list: {
-    maxHeight: '450px',
-    overflow: 'scroll'
-  }
-}));
+const template = { __html: '<a class="weatherwidget-io" href="https://forecast7.com/en/45d40n71d88/sherbrooke/" data-label_1="SHERBROOKE" data-label_2="WEATHER" data-font="Helvetica" data-icons="Climacons Animated" data-mode="Forecast" data-days="5" data-theme="original" >SHERBROOKE WEATHER</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://weatherwidget.io/js/widget.min.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","weatherwidget-io-js");</script>' };
 
 function WeekWeather({ city }) {
-  const classes = useStyles();
-
   const [weekWeather] = useWeather(city);
 
   if (weekWeather === []) {
@@ -46,6 +28,8 @@ function WeekWeather({ city }) {
     );
   }
 
+  console.log('weekWeather', weekWeather);
+
   return (
     <Card>
       <CardHeader
@@ -53,26 +37,7 @@ function WeekWeather({ city }) {
         title="Next 5 day weather"
       />
       <Divider />
-      <List className={classes.list}>
-        {weekWeather.map((timeWeather, i) => (
-          <ListItem
-            divider={i < timeWeather.length - 1}
-            key={timeWeather.id}
-          >
-            <ListItemAvatar>
-              <img
-                alt={timeWeather.type}
-                className={classes.image}
-                src={timeWeather.icon}
-              />
-            </ListItemAvatar>
-            <ListItemText
-              primary={`${timeWeather.type.toUpperCase()} - ${timeWeather.temperature}°C`}
-              secondary={`${timeWeather.date.toUpperCase()}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      <div innerHTML={template} />
     </Card>
   );
 }

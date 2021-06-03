@@ -9,10 +9,12 @@ function formatWeatherData(data) {
 
   for (const key in data.list) {
     const object = data.list[key];
+    const currentDate = new Date(object.dt_txt);
 
     weather.push({
       id: uuid(),
-      date: object.dt_txt,
+      day_of_the_week: currentDate.getDay(),
+      date: currentDate.toString(),
       temperature: object.main.temp,
       type: object.weather[0].description,
       icon: `http://openweathermap.org/img/w/${object.weather[0].icon}.png`
