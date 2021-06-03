@@ -148,8 +148,8 @@ function hidePrivateInformation(taskList, user) {
 }
 
 export default function useTrelloTasks() {
-  const key = '2d09225b4af4e24c609c28f61841788e';
-  const token = 'b248004e920b5267c67937631cb49495dcf7475a757a2762634feb0c21090534';
+  const key = process.env.REACT_APP_TRELLO_BOARD_KEY;
+  const token = process.env.REACT_APP_TRELLO_TOKEN;
 
   const finishListName = 'Terminer';
   const weekGoalsListName = 'Semaine (Top 3)';
