@@ -8,15 +8,15 @@ import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { v4 as uuid } from 'uuid';
 
-async function getTrelloBoardInfo(key, token) {
-  const url = `https://api.trello.com/1/boards/vfd1UBY0?key=${key}&token=${token}`;
+async function getTrelloBoardInfo(boardId, key, token) {
+  const url = `https://api.trello.com/1/boards/${boardId}?key=${key}&token=${token}`;
   const data = await axios.get(url);
 
   return data.data;
 }
 
-async function getTrelloBoardLists(key, token) {
-  const url = `https://api.trello.com/1/boards/vfd1UBY0/lists/?key=${key}&token=${token}`;
+async function getTrelloBoardLists(boardId, key, token) {
+  const url = `https://api.trello.com/1/boards/${boardId}/lists/?key=${key}&token=${token}`;
   const data = await axios.get(url);
 
   return data.data;
@@ -28,8 +28,8 @@ async function getTrelloListCards(key, token, listId) {
   return data.data;
 }
 
-async function getTrelloListCardsForName(key, token, listName) {
-  const boardLists = await getTrelloBoardLists(key, token);
+async function getTrelloListCardsForName(boardId, key, token, listName) {
+  const boardLists = await getTrelloBoardLists(boardId, key, token);
   const doneListId = boardLists.find((element) => element.name === listName).id;
   const cards = await getTrelloListCards(key, token, doneListId);
 
@@ -50,17 +50,16 @@ async function getTrelloListCardsForName(key, token, listName) {
   return weekList;
 }
 
-async function getDashboardInfo(key, token, listName) {
-  await getTrelloBoardInfo(key, token);
+async function getDashboardInfo(boardId, key, token, listName) {
+  await getTrelloBoardInfo(boardId, key, token);
 
-  const boardLists = await getTrelloBoardLists(key, token);
+  const boardLists = await getTrelloBoardLists(boardId, key, token);
   const doneListId = boardLists.find((element) => element.name === listName).id;
 
   const cards = await getTrelloListCards(key, token, doneListId);
 
   let i;
   const taskInfo = [];
-  const todayTask = [];
   const yesterdayTask = [];
   const labelLists = [];
 
@@ -93,9 +92,7 @@ async function getDashboardInfo(key, token, listName) {
       const yesterdayDate = new Date();
       yesterdayDate.setDate(todaysDate.getDate() - 1);
 
-      if (dueDate.setHours(0, 0, 0, 0) === todaysDate.setHours(0, 0, 0, 0)) {
-        todayTask.push(obj);
-      } else if (dueDate.setHours(0, 0, 0, 0) === yesterdayDate.setHours(0, 0, 0, 0)) {
+      if (dueDate.setHours(0, 0, 0, 0) === yesterdayDate.setHours(0, 0, 0, 0)) {
         yesterdayTask.push(obj);
       }
     }
@@ -126,7 +123,7 @@ async function getDashboardInfo(key, token, listName) {
     }
   }
 
-  return [todayTask, yesterdayTask, taskInfo, labelLists];
+  return [yesterdayTask, taskInfo, labelLists];
 }
 
 function hidePrivateInformation(taskList, user) {
@@ -151,8 +148,12 @@ export default function useTrelloTasks() {
   const key = process.env.REACT_APP_TRELLO_BOARD_KEY;
   const token = process.env.REACT_APP_TRELLO_TOKEN;
 
-  const finishListName = 'Terminer';
+  const todayTaskName = 'Done';
   const weekGoalsListName = 'Semaine (Top 3)';
+  const archiveListName = 'Last';
+
+  const currentBoardId = 'vfd1UBY0';
+  const archiveBoardId = '6d2xFUep';
 
   const { user } = useAuth0();
 
@@ -166,8 +167,9 @@ export default function useTrelloTasks() {
 
   useEffect(() => {
     async function fetchData() {
-      const [today, yesterday, all, labelLists] = await getDashboardInfo(key, token, finishListName);
-      const goals = await getTrelloListCardsForName(key, token, weekGoalsListName);
+      const [yesterday, all, labelLists] = await getDashboardInfo(archiveBoardId, key, token, archiveListName);
+      const goals = await getTrelloListCardsForName(currentBoardId, key, token, weekGoalsListName);
+      const today = await getTrelloListCardsForName(currentBoardId, key, token, todayTaskName);
 
       setTodayTaskList(hidePrivateInformation(today, user));
       setYesterdayTaskList(hidePrivateInformation(yesterday, user));

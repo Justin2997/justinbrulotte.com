@@ -45,6 +45,9 @@ const backgroundColorsPie = [
   'rgb(244, 194, 148)',
   'rgb(185, 191, 121)',
   'rgb(206, 226, 46)',
+  'rgb(111, 22, 45)',
+  'rgb(255, 0, 0)',
+  'rgb(0, 255, 0)',
 ];
 
 const TaskReparticion = ({ className, labelLists }) => {
