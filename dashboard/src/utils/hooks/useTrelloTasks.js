@@ -61,7 +61,17 @@ async function getDashboardInfo(boardId, key, token, listName) {
   let i;
   const taskInfo = [];
   const yesterdayTask = [];
-  const labelLists = [];
+  const labelListsTotal = [];
+  const labelListsOfWeek = [];
+
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setMonth((today.getMonth() - 1) % 12);
+
+  const lastLastMonth = new Date();
+  lastLastMonth.setMonth((today.getMonth() - 2) % 12);
+
+  const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
   for (i in cards) {
     const {
@@ -73,13 +83,14 @@ async function getDashboardInfo(boardId, key, token, listName) {
     if (label !== undefined) {
       labelName = label.name;
       let newLabel = true;
-      for (i in labelLists) {
-        if (labelName === labelLists[i].name) {
+      for (i in labelListsTotal) {
+        if (labelName === labelListsTotal[i].name) {
           newLabel = false;
         }
       }
       if (newLabel) {
-        labelLists.push({ name: labelName, number: 0 });
+        labelListsTotal.push({ name: labelName, number: 0 });
+        labelListsOfWeek.push({ name: labelName, number: 0 });
       }
     }
 
@@ -100,13 +111,6 @@ async function getDashboardInfo(boardId, key, token, listName) {
     taskInfo.push(obj);
   }
 
-  const today = new Date();
-  const lastMonth = new Date();
-  lastMonth.setMonth((today.getMonth() - 1) % 12);
-
-  const lastLastMonth = new Date();
-  lastLastMonth.setMonth((today.getMonth() - 2) % 12);
-
   const lastMonthList = taskInfo.filter((task) => {
     const date = new Date(task.due);
     return (lastMonth.getMonth() === date.getMonth() || lastLastMonth.getMonth() === date.getMonth());
@@ -116,14 +120,30 @@ async function getDashboardInfo(boardId, key, token, listName) {
   let e;
   for (e in lastMonthList) {
     let t;
-    for (t in labelLists) {
-      if (taskInfo[e].labelName === labelLists[t].name) {
-        labelLists[t].number = labelLists[t].number + 1;
+    for (t in labelListsTotal) {
+      if (taskInfo[e].labelName === labelListsTotal[t].name) {
+        labelListsTotal[t].number = labelListsTotal[t].number + 1;
       }
     }
   }
 
-  return [yesterdayTask, taskInfo, labelLists];
+  // Numer of task in any categorie for this week
+  const lastWeekList = taskInfo.filter((task) => {
+    const date = new Date(task.due);
+    return (lastWeek.getTime() < date.getTime());
+  });
+
+  // Number of task in any categorie
+  for (e in lastWeekList) {
+    let t;
+    for (t in labelListsOfWeek) {
+      if (taskInfo[e].labelName === labelListsOfWeek[t].name) {
+        labelListsOfWeek[t].number = labelListsOfWeek[t].number + 1;
+      }
+    }
+  }
+
+  return [yesterdayTask, taskInfo, labelListsTotal, labelListsOfWeek];
 }
 
 function hidePrivateInformation(taskList, user) {
@@ -163,11 +183,12 @@ export default function useTrelloTasks() {
   const [yesterdayTask, setYesterdayTaskList] = useState(null);
   const [allTask, setAllTaskList] = useState(null);
   const [labelList, setLabelList] = useState(null);
+  const [labelListsOfWeek, setLabelListsOfWeek] = useState(null);
   const [weekGoals, setWeekGoals] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const [yesterday, all, labelLists] = await getDashboardInfo(archiveBoardId, key, token, archiveListName);
+      const [yesterday, all, labelLists, labelWeek] = await getDashboardInfo(archiveBoardId, key, token, archiveListName);
       const goals = await getTrelloListCardsForName(currentBoardId, key, token, weekGoalsListName);
       const today = await getTrelloListCardsForName(currentBoardId, key, token, todayTaskName);
 
@@ -176,6 +197,7 @@ export default function useTrelloTasks() {
       setAllTaskList(all);
       setLabelList(labelLists);
       setWeekGoals(goals);
+      setLabelListsOfWeek(labelWeek);
     }
 
     const timeout = setTimeout(() => {
@@ -186,5 +208,5 @@ export default function useTrelloTasks() {
     return () => clearTimeout(timeout);
   }, [counter]);
 
-  return [todayTask, yesterdayTask, allTask, labelList, weekGoals];
+  return [todayTask, yesterdayTask, allTask, labelList, weekGoals, labelListsOfWeek];
 }

@@ -16,10 +16,10 @@ import useAllStravaActivity from 'src/utils/hooks/useAllStravaActivity';
 import Page from 'src/components/Page';
 import NumberOfTask from './NumberOfTask';
 import TodayTasks from './TodayTasks';
-import SleepLevel from './SleepLevel';
 import NumberOfTaskByMonth from './NumberOfTaskByMonth';
 import YesterdayTime from './YesterdayTime';
 import TaskReparticion from './TaskReparticion';
+import TaskReparticionOfWeek from './TaskReparticionOfWeek';
 import TaskWeekDistribution from './TaskWeekDistribution';
 import SportOfTheMonth from './SportOfTheMonth';
 import YeasterdayTasks from './YeasterdayTasks';
@@ -38,15 +38,8 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
 
-  const [todayTask, yesterdayTask, allTask, labelLists, weekGoals] = useTrelloTasks();
+  const [todayTask, yesterdayTask, allTask, labelLists, weekGoals, labelListsOfWeek] = useTrelloTasks();
   const [stravaActivities, stravaLoading] = useAllStravaActivity();
-
-  const { data: fitbitData, loading: fitbitLoading, error: fitbitError } = useGoogleSheets({
-    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-    sheetId: process.env.REACT_APP_FITBIT_GOOGLE_SHEETS_ID,
-    sheetsNames: ['Feuille 1'],
-  });
-  if (fitbitError) { console.error(fitbitError); } // TODO: Add error to the user
 
   const { data: rescueTimeData, loading: rescueTimeLoading, error: rescueTimeError } = useGoogleSheets({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -122,7 +115,7 @@ const Dashboard = () => {
             item
             lg={4}
             sm={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <NumberOfTask todayTask={todayTask} yesterdayTask={yesterdayTask} />
@@ -131,7 +124,7 @@ const Dashboard = () => {
             item
             lg={4}
             sm={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <NumberOfTaskByMonth allTask={allTask} />
@@ -140,16 +133,7 @@ const Dashboard = () => {
             item
             lg={4}
             sm={6}
-            xl={3}
-            xs={12}
-          >
-            <SleepLevel fitbitData={fitbitData} loading={fitbitLoading} />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            sm={6}
-            xl={3}
+            xl={4}
             xs={12}
           >
             <YesterdayTime rescueTimeData={rescueTimeData} loading={rescueTimeLoading} />
@@ -188,7 +172,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <SportOfTheMonth stravaActivities={stravaActivities} loading={stravaLoading} />
+            <TaskReparticion labelLists={labelLists} />
           </Grid>
           <Grid
             item
@@ -197,13 +181,22 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TaskReparticion labelLists={labelLists} />
+            <TaskReparticionOfWeek labelLists={labelListsOfWeek} />
+          </Grid>
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xl={3}
+            xs={12}
+          >
+            <SportOfTheMonth stravaActivities={stravaActivities} loading={stravaLoading} />
           </Grid>
           <Grid
             item
             lg={12}
             md={12}
-            xl={9}
+            xl={6}
             xs={12}
           >
             <WeekWeather city="Sherbrooke" />
