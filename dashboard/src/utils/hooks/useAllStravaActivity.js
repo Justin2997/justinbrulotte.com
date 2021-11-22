@@ -28,19 +28,19 @@ function formatStravaData(stravaSwimData, stravaRunData, stravaHikeData) {
   const thisMonthHike = stravaHikeData[0].data.filter((activity) => {
     const dateString = activity.date.replace('at ', '');
     const date = moment(dateString, 'LLL');
-    return (today.month() === date.month());
+    return (today.month() === date.month() && today.year() === date.year());
   });
 
   const thisMonthSwim = stravaSwimData[0].data.filter((activity) => {
     const dateString = activity.date.replace('at ', '');
     const date = moment(dateString, 'LLL');
-    return (today.month() === date.month());
+    return (today.month() === date.month() && today.year() === date.year());
   });
 
   const thisMonthRun = stravaRunData[0].data.filter((activity) => {
     const dateString = activity.date.replace('at ', '');
     const date = moment(dateString, 'LLL');
-    return (today.month() === date.month());
+    return (today.month() === date.month() && today.year() === date.year());
   });
 
   const thisMonthActivities = [...thisMonthHike, ...thisMonthSwim, ...thisMonthRun];
