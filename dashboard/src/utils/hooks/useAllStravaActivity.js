@@ -22,7 +22,7 @@ function sortActivity(a, b) {
   return 0;
 }
 
-function formatStravaData(stravaSwimData, stravaRunData, stravaHikeData) {
+function formatStravaData(stravaSwimData, stravaRunData, stravaHikeData, stravaWalkData) {
   const today = moment();
 
   const thisMonthHike = stravaHikeData[0].data.filter((activity) => {
@@ -43,7 +43,13 @@ function formatStravaData(stravaSwimData, stravaRunData, stravaHikeData) {
     return (today.month() === date.month() && today.year() === date.year());
   });
 
-  const thisMonthActivities = [...thisMonthHike, ...thisMonthSwim, ...thisMonthRun];
+  const thisMonthWalk = stravaWalkData[0].data.filter((activity) => {
+    const dateString = activity.date.replace('at ', '');
+    const date = moment(dateString, 'LLL');
+    return (today.month() === date.month() && today.year() === date.year());
+  });
+
+  const thisMonthActivities = [...thisMonthHike, ...thisMonthSwim, ...thisMonthRun, ...thisMonthWalk];
   thisMonthActivities.sort(sortActivity);
 
   return (thisMonthActivities);
@@ -71,10 +77,17 @@ export default function useAllStravaActivity() {
   });
   if (stravaHikeError) { console.error(stravaHikeError); } // TODO: Add error to the user
 
-  if (stravaSwimLoading || stravaRunLoading || stravaHikeLoading) {
+  const { data: stravaWalkData, loading: stravaWalkLoading, error: stravaWalkError } = useGoogleSheets({
+    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    sheetId: process.env.REACT_APP_STRAVA_WALK_GOOGLE_SHEETS_ID,
+    sheetsNames: ['Feuille 1'],
+  });
+  if (stravaWalkError) { console.error(stravaWalkError); } // TODO: Add error to the user
+
+  if (stravaSwimLoading || stravaRunLoading || stravaHikeLoading || stravaWalkLoading) {
     return [null, true];
   }
 
-  const stravaData = formatStravaData(stravaSwimData, stravaRunData, stravaHikeData);
-  return [stravaData, stravaSwimLoading || stravaRunLoading || stravaHikeLoading];
+  const stravaData = formatStravaData(stravaSwimData, stravaRunData, stravaHikeData, stravaWalkData);
+  return [stravaData, stravaSwimLoading || stravaRunLoading || stravaHikeLoading || stravaWalkLoading];
 }
