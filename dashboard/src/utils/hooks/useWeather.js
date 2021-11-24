@@ -15,7 +15,7 @@ function formatWeatherData(data) {
       date: object.dt_txt,
       temperature: object.main.temp,
       type: object.weather[0].description,
-      icon: `http://openweathermap.org/img/w/${object.weather[0].icon}.png`
+      icon: `https://openweathermap.org/img/w/${object.weather[0].icon}.png`
     });
   }
   return weather;
