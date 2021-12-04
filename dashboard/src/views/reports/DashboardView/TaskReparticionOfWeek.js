@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const backgroundColorsPie = [
+  'rgb(186, 10, 229)',
   'rgb(254, 217, 175)',
   'rgb(134, 24, 62)',
   'rgb(244, 194, 148)',
