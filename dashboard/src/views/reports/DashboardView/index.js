@@ -21,6 +21,7 @@ import YesterdayTime from './YesterdayTime';
 import TaskReparticion from './TaskReparticion';
 import TaskReparticionOfWeek from './TaskReparticionOfWeek';
 import TaskWeekDistribution from './TaskWeekDistribution';
+import TaskReparticionOfMonth from './TaskReparticionOfMonth';
 import SportOfTheMonth from './SportOfTheMonth';
 import YeasterdayTasks from './YeasterdayTasks';
 import WeekGoals from './WeekGoals';
@@ -210,6 +211,19 @@ const Dashboard = () => {
           >
             <TaskWeekDistribution allTask={allTask} />
           </Grid>
+          {
+            ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((title, index) => (
+              <Grid
+                item
+                lg={3}
+                md={3}
+                xl={3}
+                xs={12}
+              >
+                <TaskReparticionOfMonth title={title} allTask={allTask} monthNumber={index} />
+              </Grid>
+            ))
+          }
         </Grid>
       </Container>
     </Page>

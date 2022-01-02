@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable max-len */
 /* eslint-disable operator-assignment */
 /* eslint-disable guard-for-in */
@@ -22,16 +23,16 @@ async function getTrelloBoardLists(boardId, key, token) {
   return data.data;
 }
 
-async function getTrelloListCards(key, token, listId) {
-  const url = `https://api.trello.com/1/lists/${listId}/cards/?key=${key}&token=${token}`;
+async function getTrelloListCards(key, token, listId, filter) {
+  const url = `https://api.trello.com/1/lists/${listId}/cards/?key=${key}&token=${token}&filter=${filter}`;
   const data = await axios.get(url);
   return data.data;
 }
 
-async function getTrelloListCardsForName(boardId, key, token, listName) {
+async function getTrelloListCardsForName(boardId, key, token, filter, listName) {
   const boardLists = await getTrelloBoardLists(boardId, key, token);
   const doneListId = boardLists.find((element) => element.name === listName).id;
-  const cards = await getTrelloListCards(key, token, doneListId);
+  const cards = await getTrelloListCards(key, token, doneListId, filter);
 
   let i;
   const weekList = [];
@@ -41,55 +42,54 @@ async function getTrelloListCardsForName(boardId, key, token, listName) {
     } = cards[i];
     const label = cards[i].labels[0];
 
-    const obj = {
-      id: uuid(), name, labelName: label.name, dateLastActivity, due, shortUrl
-    };
-    weekList.push(obj);
+    if (label) {
+      const obj = {
+        id: uuid(), name, labelName: label.name, dateLastActivity, due, shortUrl
+      };
+      weekList.push(obj);
+    }
   }
 
   return weekList;
 }
 
-async function getDashboardInfo(boardId, key, token, listName) {
+async function getDashboardInfo(boardId, key, token) {
+  const allBoardCards = [];
   await getTrelloBoardInfo(boardId, key, token);
 
   const boardLists = await getTrelloBoardLists(boardId, key, token);
-  const doneListId = boardLists.find((element) => element.name === listName).id;
-
-  const cards = await getTrelloListCards(key, token, doneListId);
+  for (const index in boardLists) {
+    const doneListId = boardLists[index].id;
+    const cards = await getTrelloListCards(key, token, doneListId, 'all');
+    allBoardCards.push(...cards);
+  }
 
   let i;
   const taskInfo = [];
   const yesterdayTask = [];
-  const labelListsTotal = [];
+  const labelListsLast30days = [];
   const labelListsOfWeek = [];
 
   const today = new Date();
-  const lastMonth = new Date();
-  lastMonth.setMonth((today.getMonth() - 1) % 12);
-
-  const lastLastMonth = new Date();
-  lastLastMonth.setMonth((today.getMonth() - 2) % 12);
-
   const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-  for (i in cards) {
+  for (i in allBoardCards) {
     const {
       dateLastActivity, shortUrl, due, name
-    } = cards[i];
-    const label = cards[i].labels[0];
+    } = allBoardCards[i];
+    const label = allBoardCards[i].labels[0];
     let labelName;
 
     if (label !== undefined) {
       labelName = label.name;
       let newLabel = true;
-      for (i in labelListsTotal) {
-        if (labelName === labelListsTotal[i].name) {
+      for (i in labelListsLast30days) {
+        if (labelName === labelListsLast30days[i].name) {
           newLabel = false;
         }
       }
       if (newLabel) {
-        labelListsTotal.push({ name: labelName, number: 0 });
+        labelListsLast30days.push({ name: labelName, number: 0 });
         labelListsOfWeek.push({ name: labelName, number: 0 });
       }
     }
@@ -111,18 +111,19 @@ async function getDashboardInfo(boardId, key, token, listName) {
     taskInfo.push(obj);
   }
 
+  const priorDate = new Date().setDate(today.getDate() - 30);
   const lastMonthList = taskInfo.filter((task) => {
     const date = new Date(task.due);
-    return (lastMonth.getMonth() === date.getMonth() || lastLastMonth.getMonth() === date.getMonth());
+    return (priorDate <= date.getTime());
   });
 
   // Number of task in any categorie
   let e;
   for (e in lastMonthList) {
     let t;
-    for (t in labelListsTotal) {
-      if (taskInfo[e].labelName === labelListsTotal[t].name) {
-        labelListsTotal[t].number = labelListsTotal[t].number + 1;
+    for (t in labelListsLast30days) {
+      if (taskInfo[e].labelName === labelListsLast30days[t].name) {
+        labelListsLast30days[t].number = labelListsLast30days[t].number + 1;
       }
     }
   }
@@ -143,7 +144,7 @@ async function getDashboardInfo(boardId, key, token, listName) {
     }
   }
 
-  return [yesterdayTask, taskInfo, labelListsTotal, labelListsOfWeek];
+  return [yesterdayTask, taskInfo, labelListsLast30days, labelListsOfWeek];
 }
 
 function hidePrivateInformation(taskList, user) {
@@ -170,7 +171,6 @@ export default function useTrelloTasks() {
 
   const todayTaskName = 'Done';
   const weekGoalsListName = 'Semaine (Top 3)';
-  const archiveListName = 'Last';
 
   const currentBoardId = 'vfd1UBY0';
   const archiveBoardId = '6d2xFUep';
@@ -188,9 +188,9 @@ export default function useTrelloTasks() {
 
   useEffect(() => {
     async function fetchData() {
-      const [yesterday, all, labelLists, labelWeek] = await getDashboardInfo(archiveBoardId, key, token, archiveListName);
-      const goals = await getTrelloListCardsForName(currentBoardId, key, token, weekGoalsListName);
-      const today = await getTrelloListCardsForName(currentBoardId, key, token, todayTaskName);
+      const [yesterday, all, labelLists, labelWeek] = await getDashboardInfo(archiveBoardId, key, token);
+      const goals = await getTrelloListCardsForName(currentBoardId, key, token, 'open', weekGoalsListName);
+      const today = await getTrelloListCardsForName(currentBoardId, key, token, 'open', todayTaskName);
 
       setTodayTaskList(hidePrivateInformation(today, user));
       setYesterdayTaskList(hidePrivateInformation(yesterday, user));
@@ -202,7 +202,7 @@ export default function useTrelloTasks() {
 
     const timeout = setTimeout(() => {
       setCounter(counter + 1);
-    }, 10000);
+    }, 30000);
 
     fetchData();
     return () => clearTimeout(timeout);

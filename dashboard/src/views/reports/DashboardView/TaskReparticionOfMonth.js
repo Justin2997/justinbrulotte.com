@@ -16,7 +16,8 @@ import {
   colors,
   makeStyles,
   CircularProgress,
-  useTheme
+  useTheme,
+  Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -25,11 +26,13 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TaskReparticionOfWeek = ({ className, labelLists }) => {
+const TaskReparticionOfMonth = ({
+  className, title, allTask, monthNumber
+}) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  if (labelLists === null) {
+  if (allTask === null) {
     return (
       <Card
         className={clsx(classes.root, className)}
@@ -63,6 +66,50 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
     }
     return 0;
   }
+
+  function compileThisMonthTask() {
+    let i;
+    let e;
+    const labelListsThisMonth = [];
+
+    for (i in allTask) {
+      const { labelName } = allTask[i];
+      if (labelName !== undefined) {
+        let newLabel = true;
+        for (i in labelListsThisMonth) {
+          if (labelName === labelListsThisMonth[i].name) {
+            newLabel = false;
+          }
+        }
+        if (newLabel) {
+          labelListsThisMonth.push({ name: labelName, number: 0 });
+        }
+      }
+    }
+
+    // Task group by month and label
+    const thisMonthTask = allTask.filter((task) => {
+      const date = new Date(task.due);
+      return (date.getMonth() === monthNumber && date.getFullYear() === new Date().getFullYear() - 1);
+    });
+
+    console.log(monthNumber, thisMonthTask);
+
+    for (e in thisMonthTask) {
+      let t;
+      for (t in labelListsThisMonth) {
+        if (allTask[e].labelName === labelListsThisMonth[t].name) {
+          labelListsThisMonth[t].number += 1;
+        }
+      }
+    }
+
+    console.log(labelListsThisMonth);
+
+    return labelListsThisMonth;
+  }
+
+  const labelLists = compileThisMonthTask();
 
   let index;
   const numbers = [];
@@ -114,7 +161,7 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
     <Card
       className={clsx(classes.root, className)}
     >
-      <CardHeader title="Tasks categorie of the past week" />
+      <CardHeader title={`Tasks categorie of month number ${title} (${monthNumber})`} />
       <Divider />
       <CardContent>
         <Box
@@ -127,13 +174,21 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
           />
         </Box>
       </CardContent>
+      <Typography variant="h6" color="textSecondary">
+        {' '}
+        Number of task :
+        {' '}
+        {[].length}
+      </Typography>
     </Card>
   );
 };
 
-TaskReparticionOfWeek.propTypes = {
+TaskReparticionOfMonth.propTypes = {
   className: PropTypes.string,
-  labelLists: PropTypes.array
+  title: PropTypes.string,
+  allTask: PropTypes.array,
+  monthNumber: PropTypes.number,
 };
 
-export default TaskReparticionOfWeek;
+export default TaskReparticionOfMonth;
