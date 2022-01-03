@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable no-bitwise */
 /* eslint-disable max-len */
 /* eslint-disable object-shorthand */
@@ -16,7 +17,8 @@ import {
   colors,
   makeStyles,
   CircularProgress,
-  useTheme
+  useTheme,
+  Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -25,11 +27,14 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TaskReparticionOfWeek = ({ className, labelLists }) => {
+const TaskReparticionOfMonth = ({
+  className, title, allTask, monthNumber
+}) => {
+  let thisMonthTask = [];
   const classes = useStyles();
   const theme = useTheme();
 
-  if (labelLists === null) {
+  if (allTask === null) {
     return (
       <Card
         className={clsx(classes.root, className)}
@@ -63,6 +68,46 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
     }
     return 0;
   }
+
+  function compileThisMonthTask() {
+    let i;
+    let e;
+    const labelListsThisMonth = [];
+
+    for (i in allTask) {
+      const { labelName } = allTask[i];
+      if (labelName !== undefined) {
+        let newLabel = true;
+        for (i in labelListsThisMonth) {
+          if (labelName === labelListsThisMonth[i].name) {
+            newLabel = false;
+          }
+        }
+        if (newLabel) {
+          labelListsThisMonth.push({ name: labelName, number: 0 });
+        }
+      }
+    }
+
+    // Task group by month and label
+    thisMonthTask = allTask.filter((task) => {
+      const date = new Date(task.due);
+      return (date.getMonth() === monthNumber && date.getFullYear() === new Date().getFullYear() - 1);
+    });
+
+    for (e in thisMonthTask) {
+      let t;
+      for (t in labelListsThisMonth) {
+        if (thisMonthTask[e].labelName === labelListsThisMonth[t].name) {
+          labelListsThisMonth[t].number += 1;
+        }
+      }
+    }
+
+    return labelListsThisMonth;
+  }
+
+  const labelLists = compileThisMonthTask();
 
   let index;
   const numbers = [];
@@ -114,7 +159,7 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
     <Card
       className={clsx(classes.root, className)}
     >
-      <CardHeader title="Tasks categorie of the past week" />
+      <CardHeader title={`Tasks categorie of month number ${title} (${monthNumber})`} />
       <Divider />
       <CardContent>
         <Box
@@ -126,14 +171,36 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
             options={options}
           />
         </Box>
+        <Typography variant="h4" color="textSecondary">
+          Top 3 Categories
+        </Typography>
+        <Divider />
+        <Typography variant="h5" color="textSecondary">
+          {`${labelLists[labelLists.length - 1].name.toUpperCase()} - ${labelLists[labelLists.length - 1].number} - ${(labelLists[labelLists.length - 1].number / thisMonthTask.length * 100).toFixed(2)}%`}
+        </Typography>
+        <Typography variant="h5" color="textSecondary">
+          {`${labelLists[labelLists.length - 2].name.toUpperCase()} - ${labelLists[labelLists.length - 2].number} - ${(labelLists[labelLists.length - 2].number / thisMonthTask.length * 100).toFixed(2)}%`}
+        </Typography>
+        <Typography variant="h5" color="textSecondary">
+          {`${labelLists[labelLists.length - 3].name.toUpperCase()} - ${labelLists[labelLists.length - 3].number} - ${(labelLists[labelLists.length - 3].number / thisMonthTask.length * 100).toFixed(2)}%`}
+        </Typography>
+        <Divider />
+        <Typography variant="h5" color="textSecondary">
+          {' '}
+          Number of task :
+          {' '}
+          {thisMonthTask.length}
+        </Typography>
       </CardContent>
     </Card>
   );
 };
 
-TaskReparticionOfWeek.propTypes = {
+TaskReparticionOfMonth.propTypes = {
   className: PropTypes.string,
-  labelLists: PropTypes.array
+  title: PropTypes.string,
+  allTask: PropTypes.array,
+  monthNumber: PropTypes.number,
 };
 
-export default TaskReparticionOfWeek;
+export default TaskReparticionOfMonth;
