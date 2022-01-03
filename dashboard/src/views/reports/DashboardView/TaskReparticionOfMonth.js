@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable no-bitwise */
 /* eslint-disable max-len */
 /* eslint-disable object-shorthand */
@@ -29,6 +30,7 @@ const useStyles = makeStyles(() => ({
 const TaskReparticionOfMonth = ({
   className, title, allTask, monthNumber
 }) => {
+  let thisMonthTask = [];
   const classes = useStyles();
   const theme = useTheme();
 
@@ -88,23 +90,19 @@ const TaskReparticionOfMonth = ({
     }
 
     // Task group by month and label
-    const thisMonthTask = allTask.filter((task) => {
+    thisMonthTask = allTask.filter((task) => {
       const date = new Date(task.due);
       return (date.getMonth() === monthNumber && date.getFullYear() === new Date().getFullYear() - 1);
     });
 
-    console.log(monthNumber, thisMonthTask);
-
     for (e in thisMonthTask) {
       let t;
       for (t in labelListsThisMonth) {
-        if (allTask[e].labelName === labelListsThisMonth[t].name) {
+        if (thisMonthTask[e].labelName === labelListsThisMonth[t].name) {
           labelListsThisMonth[t].number += 1;
         }
       }
     }
-
-    console.log(labelListsThisMonth);
 
     return labelListsThisMonth;
   }
@@ -173,13 +171,27 @@ const TaskReparticionOfMonth = ({
             options={options}
           />
         </Box>
+        <Typography variant="h4" color="textSecondary">
+          Top 3 Categories
+        </Typography>
+        <Divider />
+        <Typography variant="h5" color="textSecondary">
+          {`${labelLists[labelLists.length - 1].name.toUpperCase()} - ${labelLists[labelLists.length - 1].number} - ${(labelLists[labelLists.length - 1].number / thisMonthTask.length * 100).toFixed(2)}%`}
+        </Typography>
+        <Typography variant="h5" color="textSecondary">
+          {`${labelLists[labelLists.length - 2].name.toUpperCase()} - ${labelLists[labelLists.length - 2].number} - ${(labelLists[labelLists.length - 2].number / thisMonthTask.length * 100).toFixed(2)}%`}
+        </Typography>
+        <Typography variant="h5" color="textSecondary">
+          {`${labelLists[labelLists.length - 3].name.toUpperCase()} - ${labelLists[labelLists.length - 3].number} - ${(labelLists[labelLists.length - 3].number / thisMonthTask.length * 100).toFixed(2)}%`}
+        </Typography>
+        <Divider />
+        <Typography variant="h5" color="textSecondary">
+          {' '}
+          Number of task :
+          {' '}
+          {thisMonthTask.length}
+        </Typography>
       </CardContent>
-      <Typography variant="h6" color="textSecondary">
-        {' '}
-        Number of task :
-        {' '}
-        {[].length}
-      </Typography>
     </Card>
   );
 };
