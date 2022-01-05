@@ -122,7 +122,7 @@ async function getDashboardInfo(boardId, key, token) {
   for (e in lastMonthList) {
     let t;
     for (t in labelListsLast30days) {
-      if (taskInfo[e].labelName === labelListsLast30days[t].name) {
+      if (lastMonthList[e].labelName === labelListsLast30days[t].name) {
         labelListsLast30days[t].number = labelListsLast30days[t].number + 1;
       }
     }
@@ -138,7 +138,7 @@ async function getDashboardInfo(boardId, key, token) {
   for (e in lastWeekList) {
     let t;
     for (t in labelListsOfWeek) {
-      if (taskInfo[e].labelName === labelListsOfWeek[t].name) {
+      if (lastWeekList[e].labelName === labelListsOfWeek[t].name) {
         labelListsOfWeek[t].number = labelListsOfWeek[t].number + 1;
       }
     }
