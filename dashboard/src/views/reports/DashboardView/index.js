@@ -216,8 +216,8 @@ const Dashboard = () => {
               <Grid
                 item
                 lg={3}
-                md={3}
-                xl={3}
+                md={4}
+                xl={6}
                 xs={12}
               >
                 <TaskReparticionOfMonth title={title} allTask={allTask} monthNumber={index} />
