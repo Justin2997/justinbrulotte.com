@@ -217,7 +217,7 @@ const Dashboard = () => {
                 item
                 lg={3}
                 md={4}
-                xl={6}
+                xl={4}
                 xs={12}
               >
                 <TaskReparticionOfMonth title={title} allTask={allTask} monthNumber={index} />
