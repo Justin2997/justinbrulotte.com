@@ -134,6 +134,8 @@ async function getDashboardInfo(boardId, key, token) {
     return (lastWeek.getTime() < date.getTime());
   });
 
+  console.log(lastWeekList);
+
   // Number of task in any categorie
   for (e in lastWeekList) {
     let t;
@@ -173,7 +175,7 @@ export default function useTrelloTasks() {
   const weekGoalsListName = 'Semaine (Top 3)';
 
   const currentBoardId = 'vfd1UBY0';
-  const archiveBoardId = '6d2xFUep';
+  const archiveBoardId = '9eIJ6tGN';
 
   const { user } = useAuth0();
 
