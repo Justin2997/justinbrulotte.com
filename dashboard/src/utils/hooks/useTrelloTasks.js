@@ -6,7 +6,6 @@
 /* eslint-disable no-nested-ternary */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import { v4 as uuid } from 'uuid';
 
 async function getTrelloBoardInfo(boardId, key, token) {
@@ -149,11 +148,7 @@ async function getDashboardInfo(boardId, key, token) {
   return [yesterdayTask, taskInfo, labelListsLast30days, labelListsOfWeek];
 }
 
-function hidePrivateInformation(taskList, user) {
-  if (user && user.email === 'justin.brlotte797@gmail.com' && user.email_verified) {
-    return taskList;
-  }
-
+function hidePrivateInformation(taskList) {
   let index;
   const finalTaskArray = [];
   for (index in taskList) {
@@ -177,8 +172,6 @@ export default function useTrelloTasks() {
   const currentBoardId = 'vfd1UBY0';
   const archiveBoardId = '9eIJ6tGN';
 
-  const { user } = useAuth0();
-
   const [counter, setCounter] = useState(0);
 
   const [todayTask, setTodayTaskList] = useState(null);
@@ -194,8 +187,8 @@ export default function useTrelloTasks() {
       const goals = await getTrelloListCardsForName(currentBoardId, key, token, 'open', weekGoalsListName);
       const today = await getTrelloListCardsForName(currentBoardId, key, token, 'open', todayTaskName);
 
-      setTodayTaskList(hidePrivateInformation(today, user));
-      setYesterdayTaskList(hidePrivateInformation(yesterday, user));
+      setTodayTaskList(hidePrivateInformation(today));
+      setYesterdayTaskList(hidePrivateInformation(yesterday));
       setAllTaskList(all);
       setLabelList(labelLists);
       setWeekGoals(goals);

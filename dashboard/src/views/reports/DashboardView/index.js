@@ -99,10 +99,6 @@ const Dashboard = () => {
                       {' '}
                       as event tracking,
                       {' '}
-                      <b>Auth0</b>
-                      {' '}
-                      as auth service,
-                      {' '}
                       <b>Netlify</b>
                       {' '}
                       for continuous delivery.
