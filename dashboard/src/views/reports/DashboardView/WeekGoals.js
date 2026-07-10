@@ -11,6 +11,7 @@ import {
   ListItemAvatar,
   ListItemText,
   CircularProgress,
+  Typography,
   makeStyles
 } from '@material-ui/core';
 
@@ -23,8 +24,12 @@ const useStyles = makeStyles(({
     width: 48
   },
   list: {
-    maxHeight: '450px',
-    overflow: 'scroll'
+    maxHeight: 360,
+    overflowY: 'auto'
+  },
+  empty: {
+    padding: 24,
+    textAlign: 'center'
   }
 }));
 
@@ -54,26 +59,36 @@ function WeekGoals({ className, goals }) {
         title={`Week Goals (${goals.length})`}
       />
       <Divider />
-      <List className={classes.list}>
-        {goals.map((goal, i) => (
-          <ListItem
-            divider={i < goal.length - 1}
-            key={goal.id}
-          >
-            <ListItemAvatar>
-              <img
-                alt="weekGoals"
-                className={classes.image}
-                src="/static/images/goals.png"
+      {goals.length === 0 ? (
+        <Typography
+          className={classes.empty}
+          color="textSecondary"
+          variant="body2"
+        >
+          No weekly goals loaded yet.
+        </Typography>
+      ) : (
+        <List className={classes.list}>
+          {goals.map((goal, i) => (
+            <ListItem
+              divider={i < goals.length - 1}
+              key={goal.id}
+            >
+              <ListItemAvatar>
+                <img
+                  alt="weekGoals"
+                  className={classes.image}
+                  src="/static/images/goals.png"
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={goal.name}
+                secondary={`${goal.labelName.toUpperCase()}`}
               />
-            </ListItemAvatar>
-            <ListItemText
-              primary={goal.name}
-              secondary={`${goal.labelName.toUpperCase()}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Card>
   );
 }

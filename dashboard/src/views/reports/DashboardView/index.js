@@ -1,10 +1,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import {
-  Typography,
   Container,
-  CardContent,
-  Card,
   Grid,
   makeStyles
 } from '@material-ui/core';
@@ -26,6 +23,7 @@ import SportOfTheMonth from './SportOfTheMonth';
 import YeasterdayTasks from './YeasterdayTasks';
 import WeekGoals from './WeekGoals';
 import WeekWeather from './WeekWeather';
+import DailyReport from './DailyReport';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,47 +64,17 @@ const Dashboard = () => {
             xl={12}
             xs={12}
           >
-            <Card>
-              <CardContent>
-                <Grid
-                  container
-                  justify="space-between"
-                  spacing={3}
-                >
-                  <Grid item>
-                    <Typography
-                      color="textSecondary"
-                      gutterBottom
-                      variant="h6"
-                    >
-                      JUSTIN ACTIVITIES
-                    </Typography>
-                    <Typography
-                      color="textPrimary"
-                      variant="body1"
-                    >
-                      This is a regroupement of all Justin data. Build with
-                      {' '}
-                      <b>Google Sheets</b>
-                      {' '}
-                      as Database,
-                      {' '}
-                      <b>React</b>
-                      {' '}
-                      as Frondend,
-                      {' '}
-                      <b>IFTT</b>
-                      {' '}
-                      as event tracking,
-                      {' '}
-                      <b>Netlify</b>
-                      {' '}
-                      for continuous delivery.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
+            <DailyReport
+              allTask={allTask}
+              labelListsOfWeek={labelListsOfWeek}
+              rescueTimeData={rescueTimeData}
+              rescueTimeLoading={rescueTimeLoading}
+              stravaActivities={stravaActivities}
+              stravaLoading={stravaLoading}
+              todayTask={todayTask}
+              weekGoals={weekGoals}
+              yesterdayTask={yesterdayTask}
+            />
           </Grid>
           <Grid
             item

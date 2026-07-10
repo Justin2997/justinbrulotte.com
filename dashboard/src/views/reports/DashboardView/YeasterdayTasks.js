@@ -11,6 +11,7 @@ import {
   ListItemAvatar,
   ListItemText,
   CircularProgress,
+  Typography,
   makeStyles
 } from '@material-ui/core';
 
@@ -23,8 +24,12 @@ const useStyles = makeStyles(({
     width: 48
   },
   list: {
-    maxHeight: '450px',
-    overflow: 'scroll'
+    maxHeight: 360,
+    overflowY: 'auto'
+  },
+  empty: {
+    padding: 24,
+    textAlign: 'center'
   }
 }));
 
@@ -54,26 +59,36 @@ function YeasterdayTasks({ className, todayTask }) {
         title={`Yesterday Tasks (${todayTask.length})`}
       />
       <Divider />
-      <List className={classes.list}>
-        {todayTask.map((product, i) => (
-          <ListItem
-            divider={i < product.length - 1}
-            key={product.id}
-          >
-            <ListItemAvatar>
-              <img
-                alt="Product"
-                className={classes.image}
-                src="/static/images/trello_logo.png"
+      {todayTask.length === 0 ? (
+        <Typography
+          className={classes.empty}
+          color="textSecondary"
+          variant="body2"
+        >
+          No completed tasks yesterday.
+        </Typography>
+      ) : (
+        <List className={classes.list}>
+          {todayTask.map((product, i) => (
+            <ListItem
+              divider={i < todayTask.length - 1}
+              key={product.id}
+            >
+              <ListItemAvatar>
+                <img
+                  alt="Product"
+                  className={classes.image}
+                  src="/static/images/trello_logo.png"
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={product.name}
+                secondary={`${product.labelName.toUpperCase()}`}
               />
-            </ListItemAvatar>
-            <ListItemText
-              primary={product.name}
-              secondary={`${product.labelName.toUpperCase()}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Card>
   );
 }
