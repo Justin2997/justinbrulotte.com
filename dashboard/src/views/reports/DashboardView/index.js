@@ -5,7 +5,6 @@ import {
   Grid,
   makeStyles
 } from '@material-ui/core';
-import useGoogleSheets from 'use-google-sheets';
 
 import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
 import useAllStravaActivity from 'src/utils/hooks/useAllStravaActivity';
@@ -14,7 +13,6 @@ import Page from 'src/components/Page';
 import NumberOfTask from './NumberOfTask';
 import TodayTasks from './TodayTasks';
 import NumberOfTaskByMonth from './NumberOfTaskByMonth';
-import YesterdayTime from './YesterdayTime';
 import TaskReparticion from './TaskReparticion';
 import TaskReparticionOfWeek from './TaskReparticionOfWeek';
 import TaskWeekDistribution from './TaskWeekDistribution';
@@ -40,13 +38,6 @@ const Dashboard = () => {
   const [todayTask, yesterdayTask, allTask, labelLists, weekGoals, labelListsOfWeek] = useTrelloTasks();
   const [stravaActivities, stravaLoading] = useAllStravaActivity();
 
-  const { data: rescueTimeData, loading: rescueTimeLoading, error: rescueTimeError } = useGoogleSheets({
-    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-    sheetId: process.env.REACT_APP_RESCUETIME_GOOGLE_SHEETS_ID,
-    sheetsNames: ['Feuille 1'],
-  });
-  if (rescueTimeError) { console.error(rescueTimeError); } // TODO: Add error to the user
-
   return (
     <Page
       className={classes.root}
@@ -67,8 +58,6 @@ const Dashboard = () => {
             <DailyReport
               allTask={allTask}
               labelListsOfWeek={labelListsOfWeek}
-              rescueTimeData={rescueTimeData}
-              rescueTimeLoading={rescueTimeLoading}
               stravaActivities={stravaActivities}
               stravaLoading={stravaLoading}
               todayTask={todayTask}
@@ -93,15 +82,6 @@ const Dashboard = () => {
             xs={12}
           >
             <NumberOfTaskByMonth allTask={allTask} />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            sm={6}
-            xl={4}
-            xs={12}
-          >
-            <YesterdayTime rescueTimeData={rescueTimeData} loading={rescueTimeLoading} />
           </Grid>
           <Grid
             item

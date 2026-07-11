@@ -9,7 +9,6 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  LinearProgress,
   Typography,
   colors,
   makeStyles
@@ -58,11 +57,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     marginTop: theme.spacing(0.5)
   },
-  progress: {
-    borderRadius: 6,
-    height: 8,
-    marginTop: theme.spacing(1.5)
-  },
   insight: {
     borderLeft: `3px solid ${colors.indigo[500]}`,
     paddingLeft: theme.spacing(2)
@@ -102,34 +96,6 @@ function getMonthTasks(allTask, monthOffset) {
   });
 }
 
-function parseTimeToMinutes(time) {
-  if (!time) {
-    return 0;
-  }
-
-  const parts = time.split('h');
-  if (parts.length !== 2) {
-    return 0;
-  }
-
-  const hours = parseInt(parts[0], 10);
-  const minutes = parseInt(parts[1].replace('m', ''), 10);
-  return (hours * 60) + minutes;
-}
-
-function getLastComputerTime(rescueTimeData) {
-  if (
-    !rescueTimeData
-    || !rescueTimeData[0]
-    || !rescueTimeData[0].data
-    || rescueTimeData[0].data.length === 0
-  ) {
-    return null;
-  }
-
-  return rescueTimeData[0].data[rescueTimeData[0].data.length - 1];
-}
-
 function sortCategories(labelLists) {
   if (!labelLists) {
     return [];
@@ -148,8 +114,6 @@ function DailyReport({
   allTask,
   labelListsOfWeek,
   weekGoals,
-  rescueTimeData,
-  rescueTimeLoading,
   stravaActivities,
   stravaLoading
 }) {
@@ -162,14 +126,6 @@ function DailyReport({
     || labelListsOfWeek === null;
   const thisMonthTasks = getMonthTasks(allTask, 0);
   const lastMonthTasks = getMonthTasks(allTask, -1);
-  const lastComputerTime = getLastComputerTime(rescueTimeData);
-  const productiveMinutes = lastComputerTime
-    ? parseTimeToMinutes(lastComputerTime.productive_time)
-    : 0;
-  const totalMinutes = lastComputerTime ? parseTimeToMinutes(lastComputerTime.total) : 0;
-  const productivePercent = totalMinutes > 0
-    ? Math.round((productiveMinutes / totalMinutes) * 100)
-    : 0;
   const weeklyCategories = sortCategories(labelListsOfWeek);
   const taskDelta = todayTask && yesterdayTask ? todayTask.length - yesterdayTask.length : 0;
   const monthDelta = thisMonthTasks.length - lastMonthTasks.length;
@@ -316,35 +272,7 @@ function DailyReport({
             </Grid>
             <Grid
               item
-              md={6}
-              xs={12}
-            >
-              <Box className={classes.insight}>
-                <Typography
-                  color="textPrimary"
-                  variant="h5"
-                >
-                  Yesterday focus
-                </Typography>
-                <Typography
-                  className={classes.statCaption}
-                  variant="body2"
-                >
-                  {rescueTimeLoading || !lastComputerTime
-                    ? 'Loading RescueTime report'
-                    : `${lastComputerTime.productive_time} productive out of ${lastComputerTime.total}`}
-                </Typography>
-                <LinearProgress
-                  className={classes.progress}
-                  color="primary"
-                  value={productivePercent}
-                  variant="determinate"
-                />
-              </Box>
-            </Grid>
-            <Grid
-              item
-              md={6}
+              md={12}
               xs={12}
             >
               <Box className={classes.insight}>
@@ -397,8 +325,6 @@ DailyReport.propTypes = {
   allTask: PropTypes.array,
   labelListsOfWeek: PropTypes.array,
   weekGoals: PropTypes.array,
-  rescueTimeData: PropTypes.array,
-  rescueTimeLoading: PropTypes.bool,
   stravaActivities: PropTypes.array,
   stravaLoading: PropTypes.bool
 };
