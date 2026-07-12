@@ -14,7 +14,7 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/style.css?v=20260711" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
@@ -39,15 +39,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="mailto:justinbrulotte.programmation@gmail.com">
-            <span class="btn btn-default dropdown-toggle btn-primary">Contact me</span>
+          <a class="navbar-brand brand-mark" href="index.html" aria-label="Justin Brûlotte, home">
+            <span class="brand-initials">JB</span>
+            <span class="brand-name">JUSTIN BRÛLOTTE</span>
           </a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="#works">Portfolio</a></li>
+            <li><a href="#works">Work</a></li>
+            <li><a href="about.html">About</a></li>
             <li><a href="https://dashboard.justinbrulotte.ca">Dashboard</a></li>
+            <li><a class="nav-contact" href="mailto:justinbrulotte.programmation@gmail.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -57,19 +60,31 @@
 	<div id="headerwrap">
 	    <div class="container">
 			<div class="row">
-				<div class="col-lg-6 col-lg-offset-3">
-					<h1 style="font-size:52px">JUSTIN BRÛLOTTE</h1>
-					<h4>FULL-STACK, DEVOPS AND AI DEVELOPER BUILDING SAAS, EVENT TECH AND ROBOTICS PRODUCTS</h4>
+				<div class="col-lg-8 col-lg-offset-2 hero-content">
+          <p class="eyebrow">INDEPENDENT BUILDER · SHERBROOKE, CANADA</p>
+					<h1>I build useful products for complex real-world problems.</h1>
+					<p class="hero-summary">Full-stack, DevOps and AI developer building SaaS, event technology and robotics products — from the first idea to something people can actually use.</p>
+            <div class="hero-actions">
+              <a class="hero-button hero-button-primary" href="#works">Explore selected work <span aria-hidden="true">↘</span></a>
+              <a class="hero-button hero-button-secondary" href="about.html">More about me</a>
+            </div>
 				</div>
 			</div>
+			<div class="hero-signal-row" aria-label="Areas of work">
+          <span>AI &amp; MLOps</span><span>SaaS</span><span>Event technology</span><span>Robotics</span>
+        </div>
 	    </div>
+	</div>
 	</div>
 	
 	<section id="works"></section>
 	<div class="container">
 		<div class="row centered mt mb">
-      <h1>My Portfolio</h1>
-      <p class="lead-intro">Recent work focused on AI products, event technology, robotics, Web3, and practical software shipped from idea to production.</p>
+      <div class="section-heading">
+        <p class="eyebrow eyebrow-dark">SELECTED WORK</p>
+        <h2>Products built to move things forward.</h2>
+        <p class="lead-intro">Recent work focused on AI products, event technology, robotics, Web3, and practical software shipped from idea to production.</p>
+      </div>
       <div class="col-lg-4 col-md-4 col-sm-6 gallery">
         <div class="project-card">
           <a href="https://evenix.app"><img src="image/evenix-portfolio.png" alt="Evenix smart event management platform" class="img-responsive"></a>
