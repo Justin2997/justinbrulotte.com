@@ -1,224 +1,201 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Justin Brûlotte is a full-stack, DevOps, and AI developer in Canada. Founder of Evenix, co-founder at ARTIK, and builder of SaaS, Web3, robotics, and event technology products.">
+    <meta name="description" content="Justin Brûlotte is an AI developer, founder of Evenix, and co-founder of ARTIK. He builds practical software, event technology, and robotics products.">
     <meta name="author" content="Justin Brûlotte">
     <link rel="shortcut icon" href="assets/ico/favicon.ico">
-
-    <title>Justin Brûlotte</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="assets/css/style.css?v=20260711" rel="stylesheet">
+    <title>Justin Brûlotte — Developer and product builder</title>
+    <link href="assets/css/style.css?v=20260728" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
 
-  <body>
+  <body class="home-page">
+    <header class="site-header">
+      <div class="site-container header-inner">
+        <a class="site-brand" href="index.html">Justin Brûlotte</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="https://www.linkedin.com/in/justinbrulotte/">LinkedIn</a>
+          <a href="mailto:justinbrulotte.programmation@gmail.com">Email me</a>
+        </nav>
+      </div>
+    </header>
 
-    <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand brand-mark" href="index.html" aria-label="Justin Brûlotte, home">
-            <span class="brand-initials">JB</span>
-            <span class="brand-name">JUSTIN BRÛLOTTE</span>
+    <main>
+      <section class="intro">
+        <div class="site-container intro-grid">
+          <div>
+            <h1>I’m Justin. I build software products for the real world.</h1>
+          </div>
+          <div class="intro-profile">
+            <p>I work across AI, event technology, SaaS, and robotics. I turn operational problems into systems people can actually use.</p>
+            <a class="text-link" href="#work">See selected work</a>
+          </div>
+        </div>
+        <div class="site-container role-list" aria-label="Current roles">
+          <div><span>Based in</span><strong>Sherbrooke, Canada</strong></div>
+          <div><span>Current work</span><strong>AI &amp; MLOps at ServiceNow</strong></div>
+          <div><span>Founder</span><strong>Evenix</strong></div>
+          <div><span>Co-founder</span><strong>ARTIK / ARLYX</strong></div>
+        </div>
+      </section>
+
+      <section class="work-section" id="work">
+        <div class="site-container section-intro">
+          <h2>Selected work</h2>
+          <p>Products I have founded, led, or built from the ground up.</p>
+        </div>
+
+        <div class="site-container featured-work">
+          <article class="work-row">
+            <div class="work-copy">
+              <span class="work-number">01</span>
+              <h3>Evenix</h3>
+              <p class="work-role">Founder &amp; full-stack developer</p>
+              <p>An event operations platform for mobile check-in, contactless wristbands, attendance tracking, emergency workflows, and cashless experiences.</p>
+              <a class="text-link" href="https://evenix.app">Visit Evenix</a>
+            </div>
+            <a class="work-image" href="https://evenix.app" aria-label="Visit Evenix">
+              <img src="image/evenix-portfolio.png" alt="Evenix event management platform">
+            </a>
+          </article>
+
+          <article class="work-row">
+            <div class="work-copy">
+              <span class="work-number">02</span>
+              <h3>Trouve Ton Char</h3>
+              <p class="work-role">Independent SaaS product</p>
+              <p>An AI-assisted vehicle discovery tool that helps buyers clarify what they need and compare suitable options through a guided workflow.</p>
+              <a class="text-link" href="https://www.trouvetonchar.ca">Visit Trouve Ton Char</a>
+            </div>
+            <a class="work-image" href="https://www.trouvetonchar.ca" aria-label="Visit Trouve Ton Char">
+              <img src="image/car-dealer.jpeg" alt="Trouve Ton Char vehicle recommendation product">
+            </a>
+          </article>
+
+          <article class="work-row">
+            <div class="work-copy">
+              <span class="work-number">03</span>
+              <h3>ARTIK / ARLYX</h3>
+              <p class="work-role">Co-founder &amp; VP Software</p>
+              <p>Mobile robotics product work combining autonomy, field operations, and practical software for demanding real-world environments.</p>
+              <a class="text-link" href="https://arlyx.com">Visit ARLYX</a>
+            </div>
+            <a class="work-image" href="https://arlyx.com" aria-label="Visit ARLYX">
+              <img src="image/arlyx-portfolio.jpg" alt="ARLYX autonomous mobile robotics vehicle">
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="experience-section">
+        <div class="site-container experience-grid">
+          <div>
+            <h2>Engineering experience</h2>
+          </div>
+          <div class="experience-list">
+            <div>
+              <h3>ServiceNow</h3>
+              <p>AI and MLOps systems, workflow automation, and enterprise platform delivery.</p>
+            </div>
+            <div>
+              <h3>Cryptosys</h3>
+              <p>Electric vehicle and crypto-focused engineering project developed through the University of Sherbrooke ecosystem.</p>
+              <a class="text-link" href="https://www.usherbrooke.ca/genie/accueil/nouvelles/nouvelles-details/article/42749/">Read the story</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section" id="about">
+        <div class="site-container about-grid">
+          <h2>About</h2>
+          <div class="about-copy">
+            <p>I’m a computer engineer who likes working close to the problem. I have built products for event organizers, vehicle buyers, field operators, local businesses, and robotics teams.</p>
+            <p>I founded my first web programming business at 17, studied computer engineering at the University of Sherbrooke, helped lead robotics teams, and organized large student events with more than 100 volunteers.</p>
+            <p>That mix of software, operations, and entrepreneurship still shapes how I work: understand the constraints, build the useful thing, and make sure it survives outside the demo.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="archive-section">
+        <div class="site-container section-intro">
+          <h2>Earlier projects</h2>
+          <p>A selection of web, mobile, commerce, and community projects.</p>
+        </div>
+        <div class="site-container archive-grid">
+          <a class="archive-item" href="vivre375.html">
+            <img src="image/folio_vive375.png" alt="Vive375 mobile quiz">
+            <h3>Vive375</h3>
+            <p>Montreal quiz built with PHP and Swift</p>
+          </a>
+          <a class="archive-item" href="https://urbanwellnessclinic.com/">
+            <img src="image/logo_urban.png" alt="Urban Wellness Clinic">
+            <h3>Urban Wellness Clinic</h3>
+            <p>WordPress commerce project</p>
+          </a>
+          <a class="archive-item" href="vitrerie.html">
+            <img src="image/logo_vitrerie.png" alt="Vitrerie Dufour">
+            <h3>Vitrerie Dufour</h3>
+            <p>Custom estimating system built in VBA</p>
+          </a>
+          <a class="archive-item" href="prosistema.html">
+            <img src="image/folio_prosistema.png" alt="Prosistema">
+            <h3>Prosistema</h3>
+            <p>WordPress site for a Brazilian startup</p>
+          </a>
+          <a class="archive-item" href="memory.html">
+            <img src="image/folio_memory.png" alt="Canadian Memory Championship">
+            <h3>Canadian Memory Championship</h3>
+            <p>Identity and website design</p>
+          </a>
+          <a class="archive-item" href="holocity.html">
+            <img src="image/folio_holocity.png" alt="Holocity">
+            <h3>Holocity</h3>
+            <p>Augmented-reality travel map built in Swift</p>
+          </a>
+          <a class="archive-item" href="club_magog.html">
+            <img src="image/club_magog.png" alt="Club de soccer de Magog">
+            <h3>Club de soccer de Magog</h3>
+            <p>Sports website built with HTML, CSS, and JavaScript</p>
+          </a>
+          <a class="archive-item" href="monparking.html">
+            <img src="image/logo_monparking.png" alt="MonParking">
+            <h3>MonParking</h3>
+            <p>Parking application for Sherbrooke built in Swift</p>
+          </a>
+          <a class="archive-item" href="https://qnjpi-rqecd.ca/">
+            <img src="image/qnjpi.png" alt="Quebec pain association">
+            <h3>QNJPI</h3>
+            <p>WordPress site for a Quebec pain association</p>
           </a>
         </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="#works">Work</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="https://dashboard.justinbrulotte.ca">Dashboard</a></li>
-            <li><a class="nav-contact" href="mailto:justinbrulotte.programmation@gmail.com">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
+      </section>
 
+      <section class="contact-section">
+        <div class="site-container contact-grid">
+          <h2>Have a hard problem worth building for?</h2>
+          <div>
+            <p>I am available to discuss product, software, AI, and robotics work in Sherbrooke or remotely.</p>
+            <a class="contact-link" href="mailto:justinbrulotte.programmation@gmail.com">justinbrulotte.programmation@gmail.com</a>
+          </div>
+        </div>
+      </section>
+    </main>
 
-	<div id="headerwrap">
-	    <div class="container">
-			<div class="row">
-				<div class="col-lg-8 col-lg-offset-2 hero-content">
-          <p class="eyebrow">INDEPENDENT BUILDER · SHERBROOKE, CANADA</p>
-					<h1>I build useful products for complex real-world problems.</h1>
-					<p class="hero-summary">Full-stack, DevOps and AI developer building SaaS, event technology and robotics products — from the first idea to something people can actually use.</p>
-            <div class="hero-actions">
-              <a class="hero-button hero-button-primary" href="#works">Explore selected work <span aria-hidden="true">↘</span></a>
-              <a class="hero-button hero-button-secondary" href="about.html">More about me</a>
-            </div>
-				</div>
-			</div>
-			<div class="hero-signal-row" aria-label="Areas of work">
-          <span>AI &amp; MLOps</span><span>SaaS</span><span>Event technology</span><span>Robotics</span>
-        </div>
-	    </div>
-	</div>
-	</div>
-	
-	<section id="works"></section>
-	<div class="container">
-		<div class="row centered mt mb">
-      <div class="section-heading">
-        <p class="eyebrow eyebrow-dark">SELECTED WORK</p>
-        <h2>Products built to move things forward.</h2>
-        <p class="lead-intro">Recent work focused on AI products, event technology, robotics, Web3, and practical software shipped from idea to production.</p>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 gallery">
-        <div class="project-card">
-          <a href="https://evenix.app"><img src="image/evenix-portfolio.png" alt="Evenix smart event management platform" class="img-responsive"></a>
-          <h5>Evenix</h5>
-          <p>Event operations platform with mobile check-in, contactless wristbands, attendance tracking, emergency response workflows, and cashless payment support.</p>
-          <span class="project-tag">Founder and full-stack developer</span>
+    <footer class="site-footer">
+      <div class="site-container footer-inner">
+        <p>© Justin Brûlotte</p>
+        <div>
+          <a href="https://github.com/Justin2997">GitHub</a>
+          <a href="https://medium.com/@justin-brulotte">Medium</a>
+          <a href="https://dashboard.justinbrulotte.ca">Dashboard</a>
         </div>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 gallery">
-        <div class="project-card">
-          <a href="https://www.trouvetonchar.ca"><img src="image/car-dealer.jpeg" alt="AI car recommendation SaaS" class="img-responsive"></a>
-          <h5>Trouve Ton Char</h5>
-          <p>AI-assisted vehicle discovery tool that helps buyers clarify their needs and compare options with a more guided car-shopping workflow.</p>
-          <span class="project-tag">SaaS product</span>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 gallery">
-        <div class="project-card">
-          <a href="https://arlyx.com"><img src="image/arlyx-portfolio.jpg" alt="ARLYX autonomous mining vehicle" class="img-responsive"></a>
-          <h5>ARTIK / ARLYX</h5>
-          <p>Autonomous and mobile robotics product work combining software, automation, and practical workflows for real-world operations.</p>
-          <span class="project-tag">Co-founder and VP Software</span>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 gallery">
-        <div class="project-card">
-          <a href="my-nft-connection.html"><img src="image/my-nft-collection.png" alt="My NFT Collection website" class="img-responsive"></a>
-          <h5>My NFT Collection</h5>
-          <p>Web3 experiment for displaying NFT collections on a personal website, focused on making blockchain assets easier to present.</p>
-          <span class="project-tag">Web3</span>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 gallery">
-        <div class="project-card">
-          <a href="https://www.usherbrooke.ca/genie/accueil/nouvelles/nouvelles-details/article/42749/"><img src="image/cryptosys.png" alt="Cryptosys electric vehicle project" class="img-responsive"></a>
-          <h5>Cryptosys</h5>
-          <p>Electric vehicle and crypto-focused project recognized through the University of Sherbrooke engineering ecosystem.</p>
-          <span class="project-tag">EV and crypto</span>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6 gallery">
-        <div class="project-card">
-          <a href="https://www.linkedin.com/in/justinbrulotte/"><img src="image/servicenow-portfolio.svg" alt="ServiceNow logo" class="img-responsive"></a>
-          <h5>ServiceNow</h5>
-          <p>AI developer work on ServiceNow workflows, automation, and enterprise platform delivery.</p>
-          <span class="project-tag">AI developer</span>
-        </div>
-      </div>
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <h3 class="section-note">Earlier projects</h3>
-      </div>
-		  <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Montreal Quiz game build in PHP and Swift</h5>
-        <a href="vivre375.html"><img src="image/folio_vive375.png" alt="Vive375 app" class="img-responsive"></a>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Trainning e-commerce build in Wordpress</h5>
-        <a href="https://urbanwellnessclinic.com/"><img src="image/logo_urban.png" alt="UrbanWellnessClinic website" class="img-responsive"></a>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Custom estimate Excel Sheet build in VBA</h5>
-        <a href="vitrerie.html"><img src="image/logo_vitrerie.png" alt="Vitrerie Dufour" class="img-responsive"></a>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Bresil Startup web site build in Wordpress</h5>
-        <a href="prosistema.html"><img src="image/folio_prosistema.png" alt="Prosistema site web" class="img-responsive"></a>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Canadien Memory championship desing</h5>
-        <a href="memory.html"><img src="image/folio_memory.png" alt="Canadien Memory championship desing" class="img-responsive"></a>
-      </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>AR travel map build from scratch in Swift</h5>
-        <a href="holocity.html"><img src="image/folio_holocity.png" alt="AR travel map build from scratch in Swift" class="img-responsive"></a>
-      </div>
-		  <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Sport web site build in HTML/CSS and JavaScript</h5>
-        <a href="club_magog.html"><img src="image/club_magog.png" alt="Sport web site build in HTML/CSS and JavaScript" class="img-responsive"></a>
-      </div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>Parking app for Sherbrooke city build in Swift</h5>
-				<a href="monparking.html"><img src="image/logo_monparking.png" alt="Parking app for Sherbrooke city build in Swift" class="img-responsive"></a>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 gallery">
-        <h5>QC Pain association web site build in Wordpress</h5>
-        <a href="https://qnjpi-rqecd.ca/"><img src="image/qnjpi.png" alt="QC Pain association web site build in Wordpress" class="img-responsive"></a>
-      </div>
-		</div>
-	</div>
-	
-	<div id="social">
-		<div class="container">
-			<div class="row centered">
-				<div class="">
-          <a href="https://medium.com/@justin-brulotte"><i class="fa fa-medium"></i></a>
-					<a href="https://www.linkedin.com/in/justinbrulotte?trk=hp-identity-name"><i class="fa fa-linkedin"></i></a>
-                    <a href="https://github.com/Justin2997"><i class="fa fa-github"></i></a>
-                </div>
-			</div><! --/row -->
-		</div><! --/container -->
-	</div><! --/social -->
-
-	<div id="footerwrap">
-		<div class="container">
-			<div class="row centered">
-				<div class="col-lg-4">
-					<p><b>DÉVELOPPEUR, ENTREPRENEUR LIFEHACKER ET ATHLÈTE DE MÉMOIRE</b></p>
-				</div>
-			
-				<div class="col-lg-4">
-					<p>Je suis disponible en ligne ou en personne à Sherbrooke et dans les environs.</p>
-				</div>
-				<div class="col-lg-4">
-					<p><a href="mailto:justinbrulotte.programmation@gmail.com">justinbrulotte.programmation@gmail.com</a></p>
-				</div>
-			</div>
-		</div>
-	</div><! --/footerwrap -->
-	
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    </footer>
   </body>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-63545785-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 </html>
