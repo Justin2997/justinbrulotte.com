@@ -100,7 +100,7 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
 .text-link:hover, .text-link:focus { color: var(--white); background: var(--blue); }
 .role-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   margin-top: 80px;
   border: var(--border-thick) solid var(--black);
   border-bottom: 0;
@@ -299,11 +299,9 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
   .intro-grid, .section-intro, .experience-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
   .intro h1 { font-size: 52px; }
   .intro-profile { max-width: 560px; }
-  .role-list { grid-template-columns: 1fr 1fr; margin-top: 56px; }
+  .role-list { grid-template-columns: repeat(3, 1fr); margin-top: 56px; }
   .role-list div { min-height: 104px; padding: 16px; }
   .role-list div + div { border-left: var(--border-thick) solid var(--black); }
-  .role-list div:nth-child(3) { border-top: var(--border-thick) solid var(--black); border-left: 0; }
-  .role-list div:nth-child(4) { border-top: var(--border-thick) solid var(--black); }
   .work-section, .archive-section { padding: 56px 0; }
   .section-intro { margin-bottom: 24px; }
   .section-intro h2, .section-intro p { padding: 18px; }
@@ -330,7 +328,7 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
   .intro h1 { font-size: 46px; }
   .intro-profile p { font-size: 16px; }
   .role-list { grid-template-columns: 1fr; }
-  .role-list div + div, .role-list div:nth-child(4) { border-top: var(--border-thick) solid var(--black); border-left: 0; }
+  .role-list div + div { border-top: var(--border-thick) solid var(--black); border-left: 0; }
   .archive-grid { grid-template-columns: 1fr; }
   .experience-list > .experience-entry { grid-template-columns: 1fr; }
 }
