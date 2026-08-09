@@ -170,8 +170,16 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
 .experience-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; }
 .experience-grid > div > h2 { max-width: 440px; margin: 0; color: var(--white); }
 .experience-list { border: var(--border-thick) solid var(--white); }
-.experience-list > div { padding: 32px; }
-.experience-list > div + div { border-top: var(--border-thick) solid var(--white); }
+.experience-list > .experience-entry {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 32px;
+}
+.experience-list > .experience-entry + .experience-entry { border-top: var(--border-thick) solid var(--white); }
+.experience-image { border: var(--border-thick) solid var(--white); background: var(--white); }
+.experience-image img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
 .experience-list h3 { margin: 0 0 12px; color: var(--white); }
 .experience-list p { max-width: 650px; margin: 0 0 16px; }
 .experience-section .text-link { color: #6666ff; }
@@ -305,7 +313,7 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
   .work-image { grid-row: 1; }
   .work-copy { grid-row: 2; }
   .experience-section, .about-section, .contact-section { padding: 56px 0; }
-  .experience-list > div { padding: 24px; }
+  .experience-list > .experience-entry { grid-template-columns: 180px 1fr; gap: 24px; padding: 24px; }
   .about-copy { padding-left: 24px; }
   .archive-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .footer-inner { align-items: flex-start; flex-direction: column; justify-content: center; gap: 16px; padding: 24px 0; }
@@ -324,4 +332,5 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
   .role-list { grid-template-columns: 1fr; }
   .role-list div + div, .role-list div:nth-child(4) { border-top: var(--border-thick) solid var(--black); border-left: 0; }
   .archive-grid { grid-template-columns: 1fr; }
+  .experience-list > .experience-entry { grid-template-columns: 1fr; }
 }
