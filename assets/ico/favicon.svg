@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Justin Brulotte">
+  <rect width="64" height="64" fill="#000000"/>
+  <path fill="#ffffff" d="M13 12h19v7h-6v29H16v-8h6V19H13z"/>
+  <path fill="#0000ff" fill-rule="evenodd" d="M34 12h11c7.5 0 12 4.3 12 10.6 0 3.4-1.4 6.1-4 7.9 3.2 2 5 5.5 5 9.5C58 47.3 53.4 52 45.5 52H34zM41 19v8h3.9c3 0 4.8-1.5 4.8-4.1 0-2.5-1.8-3.9-4.8-3.9zm0 15v11h4.2c3.5 0 5.6-2 5.6-5.4 0-3.5-2.1-5.6-5.6-5.6z"/>
+</svg>
