@@ -214,6 +214,8 @@ h4, h5, h6 { color: var(--black); font-family: 'Work Sans', sans-serif; font-wei
   border-bottom: var(--border-thick) solid var(--black);
   object-fit: cover;
 }
+.archive-item-logo img { padding: 32px; object-fit: contain; background: var(--white); }
+.archive-item-art img { object-fit: contain; background: var(--black); }
 .archive-item h3 { margin: 0 0 6px; font-family: 'Work Sans', sans-serif; font-size: 20px; font-weight: 700; }
 .archive-item p { margin: 0; font-size: 14px; }
 .archive-item:hover, .archive-item:focus { color: var(--white); background: var(--black); text-decoration: none; }
