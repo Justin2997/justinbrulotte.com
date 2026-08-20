@@ -42,7 +42,7 @@ function getMonthTasks(allTask, monthNumber, yearNumber) {
 }
 
 const TaskReparticionOfMonth = ({
-  className, title, allTask, monthNumber
+  className, title, allTask, monthNumber, error
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -152,11 +152,11 @@ const TaskReparticionOfMonth = ({
       <Card
         className={clsx(classes.root, className)}
       >
-        <CardHeader title={`Tasks categorie of month number ${title} (${monthNumber})`} />
+        <CardHeader title={`Task categories — ${title}`} />
         <Divider />
         <CardContent>
           <Typography variant="h5" color="textSecondary">
-            No completed tasks this month.
+            {error ? 'Monthly categories are unavailable right now.' : 'No completed tasks this month.'}
           </Typography>
         </CardContent>
       </Card>
@@ -167,7 +167,7 @@ const TaskReparticionOfMonth = ({
     <Card
       className={clsx(classes.root, className)}
     >
-      <CardHeader title={`Tasks categorie of month number ${title} (${monthNumber})`} />
+      <CardHeader title={`Task categories — ${title}`} />
       <Divider />
       <CardContent>
         <Box
@@ -180,7 +180,7 @@ const TaskReparticionOfMonth = ({
           />
         </Box>
         <Typography variant="h4" color="textSecondary">
-          Top 3 Categories
+          Top 3 categories
         </Typography>
         <Divider />
         {topThree.map((category) => {
@@ -198,7 +198,7 @@ const TaskReparticionOfMonth = ({
         <Divider />
         <Typography variant="h5" color="textSecondary">
           {' '}
-          Number of task :
+          Number of tasks:
           {' '}
           {thisMonthTask.length}
         </Typography>
@@ -212,6 +212,7 @@ TaskReparticionOfMonth.propTypes = {
   title: PropTypes.string,
   allTask: PropTypes.array,
   monthNumber: PropTypes.number,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default TaskReparticionOfMonth;

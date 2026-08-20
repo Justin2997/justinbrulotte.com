@@ -16,6 +16,7 @@ import {
   colors,
   makeStyles,
   CircularProgress,
+  Typography,
   useTheme
 } from '@material-ui/core';
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TaskReparticionOfWeek = ({ className, labelLists }) => {
+const TaskReparticionOfWeek = ({ className, labelLists, error }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -36,6 +37,20 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
       >
         <CardContent>
           <CircularProgress />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (labelLists.length === 0) {
+    return (
+      <Card className={clsx(classes.root, className)}>
+        <CardHeader title="Task categories — past week" />
+        <Divider />
+        <CardContent>
+          <Typography color="textSecondary" variant="body2">
+            {error ? 'Categories are unavailable right now.' : 'No task categories this week.'}
+          </Typography>
         </CardContent>
       </Card>
     );
@@ -68,11 +83,11 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
   const numbers = [];
   const labels = [];
   const colorsPie = [];
-  labelLists.sort(compare);
-  for (index in labelLists) {
-    numbers.push(labelLists[index].number);
-    labels.push(labelLists[index].name);
-    colorsPie.push(stringToColour(labelLists[index].name));
+  const sortedLabelLists = [...labelLists].sort(compare);
+  for (index in sortedLabelLists) {
+    numbers.push(sortedLabelLists[index].number);
+    labels.push(sortedLabelLists[index].name);
+    colorsPie.push(stringToColour(sortedLabelLists[index].name));
   }
 
   const data = {
@@ -114,11 +129,11 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
     <Card
       className={clsx(classes.root, className)}
     >
-      <CardHeader title="Tasks categorie of the past week" />
+      <CardHeader title="Task categories — past week" />
       <Divider />
       <CardContent>
         <Box
-          height={400}
+          height={280}
           position="relative"
         >
           <Doughnut
@@ -133,7 +148,8 @@ const TaskReparticionOfWeek = ({ className, labelLists }) => {
 
 TaskReparticionOfWeek.propTypes = {
   className: PropTypes.string,
-  labelLists: PropTypes.array
+  labelLists: PropTypes.array,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default TaskReparticionOfWeek;

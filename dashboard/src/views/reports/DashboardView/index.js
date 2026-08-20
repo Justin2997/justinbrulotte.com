@@ -1,9 +1,14 @@
 /* eslint-disable max-len */
 import React from 'react';
 import {
+  Card,
+  CardContent,
+  CardHeader,
   Container,
+  Divider,
   Grid,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 
 import useTrelloTasks from 'src/utils/hooks/useTrelloTasks';
@@ -32,11 +37,37 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function activeMonthsForCurrentYear(tasks) {
+  if (!Array.isArray(tasks)) {
+    return [];
+  }
+
+  const currentYear = new Date().getFullYear();
+  const activeMonths = new Set();
+
+  tasks.forEach((task) => {
+    const dateValue = task.dateLastActivity || task.due;
+    const date = dateValue ? new Date(dateValue) : null;
+
+    if (date && !Number.isNaN(date.getTime()) && date.getFullYear() === currentYear) {
+      activeMonths.add(date.getMonth());
+    }
+  });
+
+  return [...activeMonths].sort((first, second) => first - second);
+}
+
 const Dashboard = () => {
   const classes = useStyles();
 
-  const [todayTask, yesterdayTask, allTask, labelLists, weekGoals, labelListsOfWeek] = useTrelloTasks();
-  const [stravaActivities, stravaLoading] = useAllStravaActivity();
+  const [todayTask, yesterdayTask, allTask, labelLists, weekGoals, labelListsOfWeek, error] = useTrelloTasks();
+  const [stravaActivities, stravaLoading, stravaError] = useAllStravaActivity();
+  const activeMonths = activeMonthsForCurrentYear(allTask);
 
   return (
     <Page
@@ -59,10 +90,12 @@ const Dashboard = () => {
               allTask={allTask}
               labelListsOfWeek={labelListsOfWeek}
               stravaActivities={stravaActivities}
+              stravaError={stravaError}
               stravaLoading={stravaLoading}
               todayTask={todayTask}
               weekGoals={weekGoals}
               yesterdayTask={yesterdayTask}
+              error={error}
             />
           </Grid>
           <Grid
@@ -72,7 +105,7 @@ const Dashboard = () => {
             xl={4}
             xs={12}
           >
-            <NumberOfTask todayTask={todayTask} yesterdayTask={yesterdayTask} />
+            <NumberOfTask error={error} todayTask={todayTask} yesterdayTask={yesterdayTask} />
           </Grid>
           <Grid
             item
@@ -81,7 +114,7 @@ const Dashboard = () => {
             xl={4}
             xs={12}
           >
-            <NumberOfTaskByMonth allTask={allTask} />
+            <NumberOfTaskByMonth allTask={allTask} error={error} />
           </Grid>
           <Grid
             item
@@ -90,7 +123,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <WeekGoals goals={weekGoals} />
+            <WeekGoals error={error} goals={weekGoals} />
           </Grid>
           <Grid
             item
@@ -99,7 +132,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TodayTasks todayTask={todayTask} />
+            <TodayTasks error={error} todayTask={todayTask} />
           </Grid>
           <Grid
             item
@@ -108,7 +141,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <YeasterdayTasks todayTask={yesterdayTask} />
+            <YeasterdayTasks error={error} todayTask={yesterdayTask} />
           </Grid>
           <Grid
             item
@@ -117,7 +150,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TaskReparticion labelLists={labelLists} />
+            <TaskReparticion error={error} labelLists={labelLists} />
           </Grid>
           <Grid
             item
@@ -126,7 +159,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TaskReparticionOfWeek labelLists={labelListsOfWeek} />
+            <TaskReparticionOfWeek error={error} labelLists={labelListsOfWeek} />
           </Grid>
           <Grid
             item
@@ -135,7 +168,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <SportOfTheMonth stravaActivities={stravaActivities} loading={stravaLoading} />
+            <SportOfTheMonth error={stravaError} loading={stravaLoading} stravaActivities={stravaActivities} />
           </Grid>
           <Grid
             item
@@ -153,18 +186,44 @@ const Dashboard = () => {
             xl={12}
             xs={12}
           >
-            <TaskWeekDistribution allTask={allTask} />
+            <TaskWeekDistribution allTask={allTask} error={error} />
           </Grid>
-          {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((title, index) => (
+          {allTask !== null && activeMonths.length === 0 && (
             <Grid
-              key={title}
+              item
+              lg={12}
+              md={12}
+              xl={12}
+              xs={12}
+            >
+              <Card>
+                <CardHeader title="Monthly category detail" />
+                <Divider />
+                <CardContent>
+                  <Typography color="textSecondary" variant="body2">
+                    {error
+                      ? 'Monthly categories are unavailable right now.'
+                      : `No completed tasks recorded in ${new Date().getFullYear()}.`}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+          {activeMonths.map((index) => (
+            <Grid
+              key={monthNames[index]}
               item
               lg={3}
               md={4}
               xl={4}
               xs={12}
             >
-              <TaskReparticionOfMonth title={title} allTask={allTask} monthNumber={index} />
+              <TaskReparticionOfMonth
+                allTask={allTask}
+                error={error}
+                monthNumber={index}
+                title={monthNames[index]}
+              />
             </Grid>
           ))}
         </Grid>

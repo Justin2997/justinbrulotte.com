@@ -3,61 +3,107 @@ import PropTypes from 'prop-types';
 
 import {
   Card,
+  CardContent,
   CardHeader,
-  Divider,
   CircularProgress,
-  makeStyles,
+  Divider,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText
+  ListItemText,
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 
 import useWeather from 'src/utils/hooks/useWeather';
 
-const useStyles = makeStyles(({
+const useStyles = makeStyles(() => ({
   root: {
     height: '100%'
   },
   image: {
-    height: 48,
-    width: 48
+    height: 36,
+    width: 36
   },
   list: {
-    maxHeight: '450px',
-    overflow: 'scroll'
+    paddingBottom: 0,
+    paddingTop: 0
   }
 }));
 
+function summarizeForecast(weather) {
+  const forecastsByDay = new Map();
+
+  weather.forEach((forecast) => {
+    const day = forecast.date.slice(0, 10);
+    const hour = Number(forecast.date.slice(11, 13));
+    const candidate = forecastsByDay.get(day);
+
+    if (!candidate || Math.abs(hour - 12) < Math.abs(candidate.hour - 12)) {
+      forecastsByDay.set(day, { ...forecast, hour });
+    }
+  });
+
+  return [...forecastsByDay.values()].slice(0, 5);
+}
+
+function formatForecastDay(dateValue) {
+  const date = new Date(dateValue.replace(' ', 'T'));
+
+  if (Number.isNaN(date.getTime())) {
+    return dateValue.slice(0, 10);
+  }
+
+  return new Intl.DateTimeFormat('en-CA', {
+    day: 'numeric',
+    month: 'short',
+    weekday: 'short'
+  }).format(date);
+}
+
 function WeekWeather({ city }) {
   const classes = useStyles();
+  const [weekWeather, loading, error] = useWeather(city);
+  const dailyForecast = summarizeForecast(weekWeather);
 
-  const [weekWeather] = useWeather(city);
-
-  if (weekWeather === []) {
+  if (loading) {
     return (
-      <Card>
-        <CardHeader
-          title="Week Weather"
-        />
+      <Card className={classes.root}>
+        <CardHeader title="Five-day forecast" />
         <Divider />
-        <CircularProgress />
+        <CardContent>
+          <CircularProgress aria-label="Loading weather forecast" size={24} />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error || dailyForecast.length === 0) {
+    return (
+      <Card className={classes.root}>
+        <CardHeader title="Five-day forecast" />
+        <Divider />
+        <CardContent>
+          <Typography color="textSecondary" role="status" variant="body2">
+            {error ? 'Weather data is unavailable right now.' : 'No forecast data is available.'}
+          </Typography>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card className={classes.root}>
       <CardHeader
-        subtitle={`${weekWeather.length} in total`}
-        title="Next 5 day weather"
+        subtitle="One representative update per day"
+        title="Five-day forecast"
       />
       <Divider />
       <List className={classes.list}>
-        {weekWeather.map((timeWeather, i) => (
+        {dailyForecast.map((timeWeather, index) => (
           <ListItem
-            divider={i < timeWeather.length - 1}
-            key={timeWeather.id}
+            divider={index < dailyForecast.length - 1}
+            key={timeWeather.date}
           >
             <ListItemAvatar>
               <img
@@ -67,8 +113,8 @@ function WeekWeather({ city }) {
               />
             </ListItemAvatar>
             <ListItemText
-              primary={`${timeWeather.type.toUpperCase()} - ${timeWeather.temperature}°C`}
-              secondary={`${timeWeather.date.toUpperCase()}`}
+              primary={`${timeWeather.temperature}°C · ${timeWeather.type}`}
+              secondary={formatForecastDay(timeWeather.date)}
             />
           </ListItem>
         ))}

@@ -96,9 +96,14 @@ export default function useAllStravaActivity() {
   if (stravaWalkError) { console.error(stravaWalkError); } // TODO: Add error to the user
 
   if (stravaSwimLoading || stravaRunLoading || stravaHikeLoading || stravaWalkLoading) {
-    return [null, true];
+    return [null, true, null];
+  }
+
+  const error = stravaSwimError || stravaRunError || stravaHikeError || stravaWalkError;
+  if (error) {
+    return [[], false, error];
   }
 
   const stravaData = formatStravaData(stravaSwimData, stravaRunData, stravaHikeData, stravaWalkData);
-  return [stravaData, false];
+  return [stravaData, false, null];
 }

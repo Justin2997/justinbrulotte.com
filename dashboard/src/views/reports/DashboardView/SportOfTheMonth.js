@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import {
   Card,
+  CardContent,
   CardHeader,
   Divider,
   List,
@@ -13,6 +14,7 @@ import {
   ListItemAvatar,
   ListItemText,
   CircularProgress,
+  Typography,
   makeStyles
 } from '@material-ui/core';
 
@@ -30,7 +32,9 @@ const useStyles = makeStyles(({
   }
 }));
 
-function SportOfTheMonth({ className, stravaActivities, loading }) {
+function SportOfTheMonth({
+  className, stravaActivities, loading, error
+}) {
   const classes = useStyles();
 
   if (stravaActivities === null || loading) {
@@ -39,10 +43,12 @@ function SportOfTheMonth({ className, stravaActivities, loading }) {
         className={clsx(classes.root, className)}
       >
         <CardHeader
-          title="Latest Products"
+          title="Sports this month"
         />
         <Divider />
-        <CircularProgress />
+        <CardContent>
+          <CircularProgress aria-label="Loading sports activities" size={24} />
+        </CardContent>
       </Card>
     );
   }
@@ -55,28 +61,36 @@ function SportOfTheMonth({ className, stravaActivities, loading }) {
         title={`This month sports (${stravaActivities.length})`}
       />
       <Divider />
-      <List className={classes.list}>
-        {stravaActivities.map((activity, i) => (
-          <ListItem
-            divider={i < activity.length - 1}
-            key={i}
-          >
-            <ListItemAvatar>
-              <a href={activity.url} target="_blank">
-                <img
-                  alt="Strava"
-                  className={classes.image}
-                  src="/static/images/strava.png"
-                />
-              </a>
-            </ListItemAvatar>
-            <ListItemText
-              primary={activity.name}
-              secondary={`${activity.date} - ${activity.string_time}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      {error || stravaActivities.length === 0 ? (
+        <CardContent>
+          <Typography color="textSecondary" variant="body2">
+            {error ? 'Sports data is unavailable right now.' : 'No activities recorded this month.'}
+          </Typography>
+        </CardContent>
+      ) : (
+        <List className={classes.list}>
+          {stravaActivities.map((activity, i) => (
+            <ListItem
+              divider={i < stravaActivities.length - 1}
+              key={activity.url || `${activity.name}-${activity.date}`}
+            >
+              <ListItemAvatar>
+                <a href={activity.url} target="_blank">
+                  <img
+                    alt="Strava"
+                    className={classes.image}
+                    src="/static/images/strava.png"
+                  />
+                </a>
+              </ListItemAvatar>
+              <ListItemText
+                primary={activity.name}
+                secondary={`${activity.date} - ${activity.string_time}`}
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Card>
   );
 }
@@ -85,6 +99,7 @@ SportOfTheMonth.propTypes = {
   className: PropTypes.string,
   stravaActivities: PropTypes.array,
   loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default SportOfTheMonth;

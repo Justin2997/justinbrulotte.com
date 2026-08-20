@@ -49,7 +49,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
+const NumberOfTask = ({
+  className, todayTask, yesterdayTask, error
+}) => {
   const classes = useStyles();
 
   function differenceCalculator() {
@@ -139,7 +141,7 @@ const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
               color="textPrimary"
               variant="h3"
             >
-              {todayTask.length}
+              {error ? '—' : todayTask.length}
             </Typography>
           </Grid>
           <Grid item>
@@ -153,12 +155,12 @@ const NumberOfTask = ({ className, todayTask, yesterdayTask }) => {
           display="flex"
           alignItems="center"
         >
-          {differenceCalculator()}
+          {error ? null : differenceCalculator()}
           <Typography
             color="textSecondary"
             variant="caption"
           >
-            Since yesterday
+            {error ? 'Task data unavailable' : 'Since yesterday'}
           </Typography>
         </Box>
       </CardContent>
@@ -170,6 +172,7 @@ NumberOfTask.propTypes = {
   className: PropTypes.string,
   todayTask: PropTypes.array,
   yesterdayTask: PropTypes.array,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default NumberOfTask;

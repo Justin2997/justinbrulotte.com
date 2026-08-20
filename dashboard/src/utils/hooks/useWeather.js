@@ -29,9 +29,13 @@ export default function useWeather(city) {
   const [counter, setCounter] = useState(0);
 
   const [weekWeather, setWeekWeather] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
+      setError(null);
       try {
         const weatherReponse = await axios.get(weatherAPI, { params: { q: city, units, appid } });
 
@@ -41,18 +45,22 @@ export default function useWeather(city) {
 
         const weather = formatWeatherData(weatherReponse.data);
         setWeekWeather(weather);
-      } catch (error) {
-        console.error(error);
+      } catch (fetchError) {
+        setWeekWeather([]);
+        setError(fetchError);
+        console.error('Weather fetch failed', fetchError);
+      } finally {
+        setLoading(false);
       }
     }
 
     const timeout = setTimeout(() => {
-      setCounter(counter + 1);
+      setCounter((value) => value + 1);
     }, 100000);
 
     fetchData();
     return () => clearTimeout(timeout);
-  }, [counter]);
+  }, [counter, city]);
 
-  return [weekWeather];
+  return [weekWeather, loading, error];
 }

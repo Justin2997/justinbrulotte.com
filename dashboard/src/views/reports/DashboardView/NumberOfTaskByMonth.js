@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NumberOfTaskByMonth = ({ className, allTask }) => {
+const NumberOfTaskByMonth = ({ className, allTask, error }) => {
   const classes = useStyles();
 
   function parseTaskDate(task) {
@@ -166,7 +166,7 @@ const NumberOfTaskByMonth = ({ className, allTask }) => {
               color="textPrimary"
               variant="h3"
             >
-              {thisMonthTask.length}
+              {error ? '—' : thisMonthTask.length}
             </Typography>
           </Grid>
           <Grid item>
@@ -180,12 +180,12 @@ const NumberOfTaskByMonth = ({ className, allTask }) => {
           display="flex"
           alignItems="center"
         >
-          {differenceCalculator()}
+          {error ? null : differenceCalculator()}
           <Typography
             color="textSecondary"
             variant="caption"
           >
-            Since last month
+            {error ? 'Task data unavailable' : 'Since last month'}
           </Typography>
         </Box>
       </CardContent>
@@ -195,7 +195,8 @@ const NumberOfTaskByMonth = ({ className, allTask }) => {
 
 NumberOfTaskByMonth.propTypes = {
   className: PropTypes.string,
-  allTask: PropTypes.array
+  allTask: PropTypes.array,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default NumberOfTaskByMonth;

@@ -22,7 +22,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      display: 'block'
+    }
   },
   eyebrow: {
     color: theme.palette.text.secondary,
@@ -35,7 +38,22 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(0.5)
   },
   updatedChip: {
-    fontWeight: 700
+    fontWeight: 700,
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing(1)
+    }
+  },
+  liveChip: {
+    backgroundColor: colors.green[50],
+    color: colors.green[800]
+  },
+  loadingChip: {
+    backgroundColor: colors.indigo[50],
+    color: colors.indigo[800]
+  },
+  unavailableChip: {
+    backgroundColor: colors.orange[50],
+    color: colors.orange[900]
   },
   statBlock: {
     border: `1px solid ${theme.palette.divider}`,
@@ -119,7 +137,9 @@ function DailyReport({
   labelListsOfWeek,
   weekGoals,
   stravaActivities,
-  stravaLoading
+  stravaError,
+  stravaLoading,
+  error
 }) {
   const classes = useStyles();
 
@@ -133,6 +153,28 @@ function DailyReport({
   const weeklyCategories = sortCategories(labelListsOfWeek);
   const taskDelta = todayTask && yesterdayTask ? todayTask.length - yesterdayTask.length : 0;
   const monthDelta = thisMonthTasks.length - lastMonthTasks.length;
+  const unavailable = Boolean(error);
+  let statusLabel = 'Live data';
+  let statusClass = classes.liveChip;
+  let weeklyCategoryMessage = 'No weekly task categories yet.';
+  let sportValue = '…';
+  let sportCaption = 'Strava activities';
+  if (loading) {
+    statusLabel = 'Loading data';
+    statusClass = classes.loadingChip;
+  } else if (unavailable) {
+    statusLabel = 'Data unavailable';
+    statusClass = classes.unavailableChip;
+    weeklyCategoryMessage = 'Weekly categories are unavailable right now.';
+  } else if (weeklyCategories.length > 0) {
+    weeklyCategoryMessage = null;
+  }
+  if (!stravaLoading && stravaActivities) {
+    sportValue = stravaError ? '—' : stravaActivities.length;
+    if (stravaError) {
+      sportCaption = 'Sports data unavailable';
+    }
+  }
 
   return (
     <Card className={clsx(classes.root, className)}>
@@ -157,14 +199,23 @@ function DailyReport({
             </Typography>
           </Box>
           <Chip
-            className={classes.updatedChip}
-            color="primary"
-            label="Live data"
+            aria-label={`Dashboard status: ${statusLabel}`}
+            className={clsx(classes.updatedChip, statusClass)}
+            label={statusLabel}
             size="small"
           />
         </Box>
+        {unavailable && (
+          <Typography
+            className={classes.muted}
+            role="status"
+            variant="body2"
+          >
+            Trello data could not be loaded. Values are unavailable until the next refresh.
+          </Typography>
+        )}
         {loading ? (
-          <CircularProgress />
+          <CircularProgress aria-label="Loading dashboard data" />
         ) : (
           <Grid
             container
@@ -185,15 +236,13 @@ function DailyReport({
                   color="textPrimary"
                   variant="h3"
                 >
-                  {todayTask.length}
+                  {unavailable ? '—' : todayTask.length}
                 </Typography>
                 <Typography
                   className={classes.statCaption}
                   variant="body2"
                 >
-                  {taskDelta >= 0 ? `+${taskDelta}` : taskDelta}
-                  {' '}
-                  vs yesterday
+                  {unavailable ? 'Data unavailable' : `${taskDelta >= 0 ? `+${taskDelta}` : taskDelta} vs yesterday`}
                 </Typography>
               </Box>
             </Grid>
@@ -212,15 +261,13 @@ function DailyReport({
                   color="textPrimary"
                   variant="h3"
                 >
-                  {thisMonthTasks.length}
+                  {unavailable ? '—' : thisMonthTasks.length}
                 </Typography>
                 <Typography
                   className={classes.statCaption}
                   variant="body2"
                 >
-                  {monthDelta >= 0 ? `+${monthDelta}` : monthDelta}
-                  {' '}
-                  vs last month
+                  {unavailable ? 'Data unavailable' : `${monthDelta >= 0 ? `+${monthDelta}` : monthDelta} vs last month`}
                 </Typography>
               </Box>
             </Grid>
@@ -239,13 +286,13 @@ function DailyReport({
                   color="textPrimary"
                   variant="h3"
                 >
-                  {weekGoals.length}
+                  {unavailable ? '—' : weekGoals.length}
                 </Typography>
                 <Typography
                   className={classes.statCaption}
                   variant="body2"
                 >
-                  Top priorities loaded
+                  {unavailable ? 'Data unavailable' : 'Top priorities loaded'}
                 </Typography>
               </Box>
             </Grid>
@@ -264,13 +311,13 @@ function DailyReport({
                   color="textPrimary"
                   variant="h3"
                 >
-                  {stravaLoading || !stravaActivities ? '…' : stravaActivities.length}
+                  {sportValue}
                 </Typography>
                 <Typography
                   className={classes.statCaption}
                   variant="body2"
                 >
-                  Strava activities
+                  {sportCaption}
                 </Typography>
               </Box>
             </Grid>
@@ -286,12 +333,12 @@ function DailyReport({
                 >
                   Top categories this week
                 </Typography>
-                {weeklyCategories.length === 0 ? (
+                {weeklyCategoryMessage ? (
                   <Typography
                     className={classes.statCaption}
                     variant="body2"
                   >
-                    No weekly task categories yet.
+                    {weeklyCategoryMessage}
                   </Typography>
                 ) : (
                   weeklyCategories.map((category) => (
@@ -330,7 +377,9 @@ DailyReport.propTypes = {
   labelListsOfWeek: PropTypes.array,
   weekGoals: PropTypes.array,
   stravaActivities: PropTypes.array,
-  stravaLoading: PropTypes.bool
+  stravaError: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  stravaLoading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default DailyReport;

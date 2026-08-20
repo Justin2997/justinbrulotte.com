@@ -33,7 +33,7 @@ const useStyles = makeStyles(({
   }
 }));
 
-function WeekGoals({ className, goals }) {
+function WeekGoals({ className, goals, error }) {
   const classes = useStyles();
 
   if (goals === null) {
@@ -65,7 +65,7 @@ function WeekGoals({ className, goals }) {
           color="textSecondary"
           variant="body2"
         >
-          No weekly goals loaded yet.
+          {error ? 'Weekly goals are unavailable right now.' : 'No weekly goals loaded yet.'}
         </Typography>
       ) : (
         <List className={classes.list}>
@@ -95,7 +95,8 @@ function WeekGoals({ className, goals }) {
 
 WeekGoals.propTypes = {
   className: PropTypes.string,
-  goals: PropTypes.array
+  goals: PropTypes.array,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default WeekGoals;

@@ -33,7 +33,7 @@ const useStyles = makeStyles(({
   }
 }));
 
-function TodayTasks({ className, todayTask }) {
+function TodayTasks({ className, todayTask, error }) {
   const classes = useStyles();
 
   if (todayTask === null) {
@@ -65,7 +65,7 @@ function TodayTasks({ className, todayTask }) {
           color="textSecondary"
           variant="body2"
         >
-          No completed tasks today.
+          {error ? 'Today’s tasks are unavailable right now.' : 'No completed tasks today.'}
         </Typography>
       ) : (
         <List className={classes.list}>
@@ -95,7 +95,8 @@ function TodayTasks({ className, todayTask }) {
 
 TodayTasks.propTypes = {
   className: PropTypes.string,
-  todayTask: PropTypes.array
+  todayTask: PropTypes.array,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default TodayTasks;

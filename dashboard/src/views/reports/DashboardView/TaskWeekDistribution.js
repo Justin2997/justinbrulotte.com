@@ -13,6 +13,7 @@ import {
   makeStyles,
   colors,
   CircularProgress,
+  Typography,
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -29,7 +30,7 @@ function getTaskDate(task) {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-const TaskWeekDistribution = ({ className, allTask }) => {
+const TaskWeekDistribution = ({ className, allTask, error }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -71,13 +72,30 @@ const TaskWeekDistribution = ({ className, allTask }) => {
     }
   }, [allTask]);
 
-  if (allTask === null) {
+  if (allTask === null || !thisWeekTask || !lastWeekTask) {
     return (
       <Card
         className={clsx(classes.root, className)}
       >
         <CardContent>
           <CircularProgress />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const hasActivity = thisWeekTask.some((value) => value > 0)
+    || lastWeekTask.some((value) => value > 0);
+
+  if (allTask.length === 0 || !hasActivity) {
+    return (
+      <Card className={clsx(classes.root, className)}>
+        <CardHeader title="Task progression in the week" />
+        <Divider />
+        <CardContent>
+          <Typography color="textSecondary" variant="body2">
+            {error ? 'Task progression is unavailable right now.' : 'No task activity recorded for this or last week.'}
+          </Typography>
         </CardContent>
       </Card>
     );
@@ -180,6 +198,7 @@ const TaskWeekDistribution = ({ className, allTask }) => {
 TaskWeekDistribution.propTypes = {
   className: PropTypes.string,
   allTask: PropTypes.array,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
 export default TaskWeekDistribution;
