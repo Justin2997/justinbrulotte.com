@@ -2,6 +2,9 @@
   command = "yarn build"
   publish = "build"
 
+[build.environment]
+  NODE_VERSION = "22"
+
 [[edge_functions]]
   function = "trello-dashboard"
   path = "/api/trello-dashboard"
