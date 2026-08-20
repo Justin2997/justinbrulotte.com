@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -21,6 +19,16 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
+function getTaskDate(task) {
+  const value = task.dateLastActivity || task.due;
+  if (!value) {
+    return null;
+  }
+
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
 const TaskWeekDistribution = ({ className, allTask }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -32,30 +40,30 @@ const TaskWeekDistribution = ({ className, allTask }) => {
     if (allTask) {
       const today = moment();
 
-      const thisWeekList = allTask.filter((task) => {
-        const date = moment(task.due);
-        return (date.isoWeek() === today.isoWeek());
-      });
-
-      const lastWeekList = allTask.filter((task) => {
-        const date = moment(task.due);
-        return (date.isoWeek() === today.isoWeek() - 1);
-      });
-
-      let index;
       const thisWeekListByDay = [0, 0, 0, 0, 0, 0, 0];
       const lastWeekListByDay = [0, 0, 0, 0, 0, 0, 0];
+      const lastWeekReference = moment().subtract(1, 'week');
+      const currentWeekNumber = today.isoWeek();
+      const currentWeekYear = today.isoWeekYear();
+      const lastWeekNumber = lastWeekReference.isoWeek();
+      const lastWeekYear = lastWeekReference.isoWeekYear();
 
-      for (index in thisWeekList) {
-        const task = thisWeekList[index];
-        const date = moment(task.due);
-        thisWeekListByDay[date.day()] = thisWeekListByDay[date.day()] + 1;
-      }
+      for (let taskIndex = 0; taskIndex < allTask.length; taskIndex += 1) {
+        const date = getTaskDate(allTask[taskIndex]);
+        if (date) {
+          const momentDate = moment(date);
+          const taskWeek = momentDate.isoWeek();
+          const taskWeekYear = momentDate.isoWeekYear();
+          const taskDay = momentDate.day();
+          const dayIndex = taskDay === 0 ? 0 : taskDay;
 
-      for (index in lastWeekList) {
-        const task = lastWeekList[index];
-        const date = moment(task.due);
-        lastWeekListByDay[date.day()] = lastWeekListByDay[date.day()] + 1;
+          if (taskWeek === currentWeekNumber && taskWeekYear === currentWeekYear) {
+            thisWeekListByDay[dayIndex] += 1;
+          }
+          if (taskWeek === lastWeekNumber && taskWeekYear === lastWeekYear) {
+            lastWeekListByDay[dayIndex] += 1;
+          }
+        }
       }
 
       setThisWeekTask(thisWeekListByDay);
@@ -88,7 +96,7 @@ const TaskWeekDistribution = ({ className, allTask }) => {
         label: 'Last week'
       }
     ],
-    labels: ['Saturday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   };
 
   const options = {

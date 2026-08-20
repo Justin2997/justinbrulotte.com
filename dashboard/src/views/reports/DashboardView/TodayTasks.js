@@ -83,7 +83,7 @@ function TodayTasks({ className, todayTask }) {
               </ListItemAvatar>
               <ListItemText
                 primary={product.name}
-                secondary={`${product.labelName.toUpperCase()}`}
+                secondary={`${(product.labelName || 'UNCATEGORIZED').toUpperCase()}`}
               />
             </ListItem>
           ))}

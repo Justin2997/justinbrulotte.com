@@ -144,7 +144,7 @@ const Dashboard = () => {
             xl={6}
             xs={12}
           >
-            <WeekWeather city="Sherbrooke" />
+            <WeekWeather city="Rimouski" />
           </Grid>
           <Grid
             item
@@ -155,19 +155,18 @@ const Dashboard = () => {
           >
             <TaskWeekDistribution allTask={allTask} />
           </Grid>
-          {
-            ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((title, index) => (
-              <Grid
-                item
-                lg={3}
-                md={4}
-                xl={4}
-                xs={12}
-              >
-                <TaskReparticionOfMonth title={title} allTask={allTask} monthNumber={index} />
-              </Grid>
-            ))
-          }
+          {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((title, index) => (
+            <Grid
+              key={title}
+              item
+              lg={3}
+              md={4}
+              xl={4}
+              xs={12}
+            >
+              <TaskReparticionOfMonth title={title} allTask={allTask} monthNumber={index} />
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </Page>

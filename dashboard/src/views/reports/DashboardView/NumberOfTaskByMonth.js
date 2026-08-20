@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -52,29 +52,32 @@ const useStyles = makeStyles((theme) => ({
 const NumberOfTaskByMonth = ({ className, allTask }) => {
   const classes = useStyles();
 
-  const [thisMonthTask, setThisMonthTask] = useState(null);
-  const [lastMonthTask, setLastMonthTask] = useState(null);
+  function parseTaskDate(task) {
+    const { dateLastActivity, due } = task;
+    const dateValue = dateLastActivity || due;
+    const date = dateValue ? new Date(dateValue) : null;
+    return date && !Number.isNaN(date.getTime()) ? date : null;
+  }
 
-  useEffect(() => {
-    if (allTask) {
-      const today = new Date();
-      const lastMonth = new Date();
-      lastMonth.setMonth((today.getMonth() - 1) % 12);
+  function filterByMonth(taskList, monthNumber, yearNumber) {
+    return taskList.filter((task) => {
+      const taskDate = parseTaskDate(task);
+      return !!taskDate
+        && taskDate.getMonth() === monthNumber
+        && taskDate.getFullYear() === yearNumber;
+    });
+  }
 
-      const thisMonthList = allTask.filter((task) => {
-        const date = new Date(task.due);
-        return (today.getMonth() === date.getMonth());
-      });
-
-      const lastMonthList = allTask.filter((task) => {
-        const date = new Date(task.due);
-        return (lastMonth.getMonth() === date.getMonth());
-      });
-
-      setThisMonthTask(thisMonthList);
-      setLastMonthTask(lastMonthList);
-    }
-  }, [allTask]);
+  const today = new Date();
+  const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+  const thisMonthTask = allTask === null
+    ? null
+    : filterByMonth(allTask, today.getMonth(), today.getFullYear());
+  const lastMonthTask = allTask === null ? null : filterByMonth(
+    allTask,
+    lastMonthDate.getMonth(),
+    lastMonthDate.getFullYear()
+  );
 
   if (allTask === null || thisMonthTask === null || lastMonthTask === null) {
     return (

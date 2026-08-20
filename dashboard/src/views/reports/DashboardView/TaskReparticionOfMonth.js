@@ -1,9 +1,5 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-bitwise */
-/* eslint-disable max-len */
-/* eslint-disable object-shorthand */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -27,10 +23,27 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+function getMonthTasks(allTask, monthNumber, yearNumber) {
+  const tasks = [];
+  for (let i = 0; i < allTask.length; i += 1) {
+    const { due, dateLastActivity } = allTask[i];
+    const dateValue = dateLastActivity || due;
+    const taskDate = dateValue ? new Date(dateValue) : null;
+    const taskTime = taskDate ? taskDate.getTime() : NaN;
+    if (taskDate
+      && !Number.isNaN(taskTime)
+      && taskDate.getMonth() === monthNumber
+      && taskDate.getFullYear() === yearNumber) {
+      tasks.push(allTask[i]);
+    }
+  }
+
+  return tasks;
+}
+
 const TaskReparticionOfMonth = ({
   className, title, allTask, monthNumber
 }) => {
-  let thisMonthTask = [];
   const classes = useStyles();
   const theme = useTheme();
 
@@ -69,55 +82,31 @@ const TaskReparticionOfMonth = ({
     return 0;
   }
 
-  function compileThisMonthTask() {
-    let i;
-    let e;
-    const labelListsThisMonth = [];
+  const thisMonthTask = getMonthTasks(allTask, monthNumber, new Date().getFullYear());
+  const labelCounter = {};
 
-    for (i in allTask) {
-      const { labelName } = allTask[i];
-      if (labelName !== undefined) {
-        let newLabel = true;
-        for (i in labelListsThisMonth) {
-          if (labelName === labelListsThisMonth[i].name) {
-            newLabel = false;
-          }
-        }
-        if (newLabel) {
-          labelListsThisMonth.push({ name: labelName, number: 0 });
-        }
-      }
+  for (let taskIndex = 0; taskIndex < thisMonthTask.length; taskIndex += 1) {
+    const { labelName } = thisMonthTask[taskIndex];
+    if (labelName) {
+      labelCounter[labelName] = (labelCounter[labelName] || 0) + 1;
     }
-
-    // Task group by month and label
-    thisMonthTask = allTask.filter((task) => {
-      const date = new Date(task.due);
-      return (date.getMonth() === monthNumber && date.getFullYear() === new Date().getFullYear() - 1);
-    });
-
-    for (e in thisMonthTask) {
-      let t;
-      for (t in labelListsThisMonth) {
-        if (thisMonthTask[e].labelName === labelListsThisMonth[t].name) {
-          labelListsThisMonth[t].number += 1;
-        }
-      }
-    }
-
-    return labelListsThisMonth;
   }
 
-  const labelLists = compileThisMonthTask();
+  const labelLists = [];
+  const monthLabelNames = Object.keys(labelCounter);
+  for (let labelIndex = 0; labelIndex < monthLabelNames.length; labelIndex += 1) {
+    const name = monthLabelNames[labelIndex];
+    const number = labelCounter[name];
+    labelLists.push({ name, number });
+  }
 
-  let index;
   const numbers = [];
   const labels = [];
   const colorsPie = [];
-  labelLists.sort(compare);
-  for (index in labelLists) {
-    numbers.push(labelLists[index].number);
-    labels.push(labelLists[index].name);
-    colorsPie.push(stringToColour(labelLists[index].name));
+  for (let pieIndex = 0; pieIndex < labelLists.length; pieIndex += 1) {
+    numbers.push(labelLists[pieIndex].number);
+    labels.push(labelLists[pieIndex].name);
+    colorsPie.push(stringToColour(labelLists[pieIndex].name));
   }
 
   const data = {
@@ -130,7 +119,7 @@ const TaskReparticionOfMonth = ({
         hoverBorderColor: colors.common.white
       }
     ],
-    labels: labels
+    labels
   };
 
   const options = {
@@ -155,6 +144,25 @@ const TaskReparticionOfMonth = ({
     }
   };
 
+  const totalTasks = thisMonthTask.length;
+  const topThree = [...labelLists].sort(compare).slice(-3).reverse();
+
+  if (topThree.length === 0) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+      >
+        <CardHeader title={`Tasks categorie of month number ${title} (${monthNumber})`} />
+        <Divider />
+        <CardContent>
+          <Typography variant="h5" color="textSecondary">
+            No completed tasks this month.
+          </Typography>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -175,15 +183,18 @@ const TaskReparticionOfMonth = ({
           Top 3 Categories
         </Typography>
         <Divider />
-        <Typography variant="h5" color="textSecondary">
-          {`${labelLists[labelLists.length - 1].name.toUpperCase()} - ${labelLists[labelLists.length - 1].number} - ${(labelLists[labelLists.length - 1].number / thisMonthTask.length * 100).toFixed(2)}%`}
-        </Typography>
-        <Typography variant="h5" color="textSecondary">
-          {`${labelLists[labelLists.length - 2].name.toUpperCase()} - ${labelLists[labelLists.length - 2].number} - ${(labelLists[labelLists.length - 2].number / thisMonthTask.length * 100).toFixed(2)}%`}
-        </Typography>
-        <Typography variant="h5" color="textSecondary">
-          {`${labelLists[labelLists.length - 3].name.toUpperCase()} - ${labelLists[labelLists.length - 3].number} - ${(labelLists[labelLists.length - 3].number / thisMonthTask.length * 100).toFixed(2)}%`}
-        </Typography>
+        {topThree.map((category) => {
+          const denominator = Math.max(totalTasks, 1);
+          return (
+            <Typography
+              key={category.name}
+              variant="h5"
+              color="textSecondary"
+            >
+              {`${category.name.toUpperCase()} - ${category.number} - ${(category.number / denominator * 100).toFixed(2)}%`}
+            </Typography>
+          );
+        })}
         <Divider />
         <Typography variant="h5" color="textSecondary">
           {' '}
