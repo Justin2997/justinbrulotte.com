@@ -1,5 +1,7 @@
 [build]
-  command = "yarn build"
+  # Keep legacy Trello secrets available to the Edge Function at runtime,
+  # while preventing Create React App from serializing them into the bundle.
+  command = "env -u REACT_APP_TRELLO_BOARD_KEY -u REACT_APP_TRELLO_TOKEN yarn build"
   publish = "build"
 
 [build.environment]
