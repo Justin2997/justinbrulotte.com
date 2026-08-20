@@ -15,6 +15,7 @@ I implemented the core plan items in code.
   - Endpoint: `/api/trello-dashboard`.
   - Dashboard now consumes `REACT_APP_TRELLO_DASHBOARD_ENDPOINT` (defaults to `/api/trello-dashboard`) from `dashboard/src/utils/hooks/useTrelloTasks.js`.
   - `REACT_APP_TRELLO_BOARD_KEY` / `REACT_APP_TRELLO_TOKEN` removed from frontend requirement.
+  - The function supports the existing Netlify variable names while `TRELLO_BOARD_KEY` / `TRELLO_TOKEN` are the canonical server-side names.
 - [x] Fixed month/year edge cases and zero-safe logic
   - `dashboard/src/views/reports/DashboardView/NumberOfTaskByMonth.js`
   - `dashboard/src/views/reports/DashboardView/TaskReparticionOfMonth.js`
@@ -35,7 +36,11 @@ I implemented the core plan items in code.
 ## Remaining (manual / infra)
 
 - [x] Move Trello credentials out of client bundle (server-side function/proxy).
-- [ ] Make sure the Netlify deployment is actually using the edge function config (dashboard route still serves SPA HTML at `/api/trello-dashboard` even after fixes; indicates config/routing may still be on previous build context).
+- [x] Make sure the Netlify deployment is actually using the edge function config.
+  - Pinned the Netlify build to Node 22 after the previous Node 12 dependency failure.
+  - The live endpoint returns `200 application/json` with `todayTask`, `yesterdayTask`, `allTask`, `labelList`, `weekGoals`, and `labelListsOfWeek`.
+  - The build unsets legacy `REACT_APP_TRELLO_*` variables so CRA cannot serialize them into the browser bundle.
+- [ ] Rotate the previously exposed Trello token/key after confirming no old public bundle needs them.
 - [ ] Lock dashboard access (auth or allow-list).
 - [ ] Add explicit data freshness/error UX in UI (last-updated timestamps + retry).
 - [ ] Review OpenWeather API key exposure and enforce key restrictions.
