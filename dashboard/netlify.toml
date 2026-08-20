@@ -1,0 +1,7 @@
+[build]
+  command = "yarn build"
+  publish = "build"
+
+[[edge_functions]]
+  function = "trello-dashboard"
+  path = "/api/trello-dashboard"
