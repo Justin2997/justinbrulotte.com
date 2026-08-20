@@ -83,7 +83,7 @@ function WeekGoals({ className, goals }) {
               </ListItemAvatar>
               <ListItemText
                 primary={goal.name}
-                secondary={`${goal.labelName.toUpperCase()}`}
+                secondary={`${(goal.labelName || 'UNCATEGORIZED').toUpperCase()}`}
               />
             </ListItem>
           ))}

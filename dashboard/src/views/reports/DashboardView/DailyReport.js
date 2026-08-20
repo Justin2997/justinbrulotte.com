@@ -88,10 +88,14 @@ function getMonthTasks(allTask, monthOffset) {
   target.setMonth(target.getMonth() + monthOffset);
 
   return allTask.filter((task) => {
-    if (!task.due) {
+    const value = task.dateLastActivity || task.due;
+    if (!value) {
       return false;
     }
-    const date = new Date(task.due);
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return false;
+    }
     return date.getMonth() === target.getMonth() && date.getFullYear() === target.getFullYear();
   });
 }
