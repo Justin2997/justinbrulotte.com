@@ -154,8 +154,17 @@ function jsonResponse(payload, status = 200) {
 export default async (request, context) => {
   const env = (context && context.env) ? context.env : {};
 
-  const key = env.TRELLO_BOARD_KEY || process.env.TRELLO_BOARD_KEY;
-  const token = env.TRELLO_TOKEN || process.env.TRELLO_TOKEN;
+  // Keep the canonical server-side names first. The REACT_APP_* fallbacks let
+  // the existing Netlify variables continue working while they are migrated;
+  // the frontend no longer references either secret.
+  const key = env.TRELLO_BOARD_KEY
+    || process.env.TRELLO_BOARD_KEY
+    || env.REACT_APP_TRELLO_BOARD_KEY
+    || process.env.REACT_APP_TRELLO_BOARD_KEY;
+  const token = env.TRELLO_TOKEN
+    || process.env.TRELLO_TOKEN
+    || env.REACT_APP_TRELLO_TOKEN
+    || process.env.REACT_APP_TRELLO_TOKEN;
   const currentBoardId = env.TRELLO_CURRENT_BOARD_ID || process.env.TRELLO_CURRENT_BOARD_ID || 'vfd1UBY0';
   const archiveBoardId = env.TRELLO_ARCHIVE_BOARD_ID || process.env.TRELLO_ARCHIVE_BOARD_ID || '9eIJ6tGN';
   const weekGoalsListName = env.TRELLO_WEEK_GOALS_LIST_NAME || process.env.TRELLO_WEEK_GOALS_LIST_NAME || 'Semaine (Top 3)';
