@@ -1,3 +1,6 @@
 {
+  "name": "justinbrulotte.com",
+  "private": true,
+  "license": "MIT",
   "dependencies": {}
 }

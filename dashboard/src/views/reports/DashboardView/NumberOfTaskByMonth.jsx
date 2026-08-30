@@ -12,17 +12,17 @@ import {
   makeStyles,
   CircularProgress
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import TodayIcon from '@material-ui/icons/Today';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
   },
   avatar: {
-    backgroundColor: colors.red[600],
+    backgroundColor: colors.green[600],
     height: 56,
     width: 56
   },
@@ -49,13 +49,56 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NumberOfTask = ({
-  className, todayTask, yesterdayTask, error
-}) => {
+const NumberOfTaskByMonth = ({ className, allTask, error }) => {
   const classes = useStyles();
 
+  function parseTaskDate(task) {
+    const { dateLastActivity, due } = task;
+    const dateValue = dateLastActivity || due;
+    const date = dateValue ? new Date(dateValue) : null;
+    return date && !Number.isNaN(date.getTime()) ? date : null;
+  }
+
+  function filterByMonth(taskList, monthNumber, yearNumber) {
+    return taskList.filter((task) => {
+      const taskDate = parseTaskDate(task);
+      return !!taskDate
+        && taskDate.getMonth() === monthNumber
+        && taskDate.getFullYear() === yearNumber;
+    });
+  }
+
+  const today = new Date();
+  const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+  const thisMonthTask = allTask === null
+    ? null
+    : filterByMonth(allTask, today.getMonth(), today.getFullYear());
+  const lastMonthTask = allTask === null ? null : filterByMonth(
+    allTask,
+    lastMonthDate.getMonth(),
+    lastMonthDate.getFullYear()
+  );
+
+  if (allTask === null || thisMonthTask === null || lastMonthTask === null) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+      >
+        <CardContent>
+          <Grid
+            container
+            justifyContent="space-between"
+            spacing={3}
+          >
+            <CircularProgress />
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  }
+
   function differenceCalculator() {
-    const difference = todayTask.length - yesterdayTask.length;
+    const difference = thisMonthTask.length - lastMonthTask.length;
 
     // Positive
     if (difference > 0) {
@@ -101,24 +144,6 @@ const NumberOfTask = ({
     );
   }
 
-  if (todayTask === null || yesterdayTask === null) {
-    return (
-      <Card
-        className={clsx(classes.root, className)}
-      >
-        <CardContent>
-          <Grid
-            container
-            justify="space-between"
-            spacing={3}
-          >
-            <CircularProgress />
-          </Grid>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -126,7 +151,7 @@ const NumberOfTask = ({
       <CardContent>
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
           spacing={3}
         >
           <Grid item>
@@ -135,18 +160,18 @@ const NumberOfTask = ({
               gutterBottom
               variant="h6"
             >
-              TASK TODAY
+              NUMBER OF TASK THIS MONTH
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              {error ? '—' : todayTask.length}
+              {error ? '—' : thisMonthTask.length}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <AssignmentTurnedInIcon />
+              <TodayIcon />
             </Avatar>
           </Grid>
         </Grid>
@@ -160,7 +185,7 @@ const NumberOfTask = ({
             color="textSecondary"
             variant="caption"
           >
-            {error ? 'Task data unavailable' : 'Since yesterday'}
+            {error ? 'Task data unavailable' : 'Since last month'}
           </Typography>
         </Box>
       </CardContent>
@@ -168,11 +193,10 @@ const NumberOfTask = ({
   );
 };
 
-NumberOfTask.propTypes = {
+NumberOfTaskByMonth.propTypes = {
   className: PropTypes.string,
-  todayTask: PropTypes.array,
-  yesterdayTask: PropTypes.array,
+  allTask: PropTypes.array,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
-export default NumberOfTask;
+export default NumberOfTaskByMonth;

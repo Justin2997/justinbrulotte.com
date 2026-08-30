@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable radix */
+
+
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -40,7 +40,7 @@ const SleepLevel = ({ className, fitbitData, loading }) => {
         <CardContent>
           <Grid
             container
-            justify="space-between"
+            justifyContent="space-between"
             spacing={3}
           >
             <CircularProgress />
@@ -62,7 +62,7 @@ const SleepLevel = ({ className, fitbitData, loading }) => {
       <CardContent>
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
           spacing={3}
         >
           <Grid item>

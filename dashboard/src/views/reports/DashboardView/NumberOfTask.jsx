@@ -12,17 +12,17 @@ import {
   makeStyles,
   CircularProgress
 } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import TodayIcon from '@material-ui/icons/Today';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
   },
   avatar: {
-    backgroundColor: colors.green[600],
+    backgroundColor: colors.red[600],
     height: 56,
     width: 56
   },
@@ -49,56 +49,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NumberOfTaskByMonth = ({ className, allTask, error }) => {
+const NumberOfTask = ({
+  className, todayTask, yesterdayTask, error
+}) => {
   const classes = useStyles();
 
-  function parseTaskDate(task) {
-    const { dateLastActivity, due } = task;
-    const dateValue = dateLastActivity || due;
-    const date = dateValue ? new Date(dateValue) : null;
-    return date && !Number.isNaN(date.getTime()) ? date : null;
-  }
-
-  function filterByMonth(taskList, monthNumber, yearNumber) {
-    return taskList.filter((task) => {
-      const taskDate = parseTaskDate(task);
-      return !!taskDate
-        && taskDate.getMonth() === monthNumber
-        && taskDate.getFullYear() === yearNumber;
-    });
-  }
-
-  const today = new Date();
-  const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-  const thisMonthTask = allTask === null
-    ? null
-    : filterByMonth(allTask, today.getMonth(), today.getFullYear());
-  const lastMonthTask = allTask === null ? null : filterByMonth(
-    allTask,
-    lastMonthDate.getMonth(),
-    lastMonthDate.getFullYear()
-  );
-
-  if (allTask === null || thisMonthTask === null || lastMonthTask === null) {
-    return (
-      <Card
-        className={clsx(classes.root, className)}
-      >
-        <CardContent>
-          <Grid
-            container
-            justify="space-between"
-            spacing={3}
-          >
-            <CircularProgress />
-          </Grid>
-        </CardContent>
-      </Card>
-    );
-  }
-
   function differenceCalculator() {
-    const difference = thisMonthTask.length - lastMonthTask.length;
+    const difference = todayTask.length - yesterdayTask.length;
 
     // Positive
     if (difference > 0) {
@@ -144,6 +101,24 @@ const NumberOfTaskByMonth = ({ className, allTask, error }) => {
     );
   }
 
+  if (todayTask === null || yesterdayTask === null) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+      >
+        <CardContent>
+          <Grid
+            container
+            justifyContent="space-between"
+            spacing={3}
+          >
+            <CircularProgress />
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -151,7 +126,7 @@ const NumberOfTaskByMonth = ({ className, allTask, error }) => {
       <CardContent>
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
           spacing={3}
         >
           <Grid item>
@@ -160,18 +135,18 @@ const NumberOfTaskByMonth = ({ className, allTask, error }) => {
               gutterBottom
               variant="h6"
             >
-              NUMBER OF TASK THIS MONTH
+              TASK TODAY
             </Typography>
             <Typography
               color="textPrimary"
               variant="h3"
             >
-              {error ? '—' : thisMonthTask.length}
+              {error ? '—' : todayTask.length}
             </Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <TodayIcon />
+              <AssignmentTurnedInIcon />
             </Avatar>
           </Grid>
         </Grid>
@@ -185,7 +160,7 @@ const NumberOfTaskByMonth = ({ className, allTask, error }) => {
             color="textSecondary"
             variant="caption"
           >
-            {error ? 'Task data unavailable' : 'Since last month'}
+            {error ? 'Task data unavailable' : 'Since yesterday'}
           </Typography>
         </Box>
       </CardContent>
@@ -193,10 +168,11 @@ const NumberOfTaskByMonth = ({ className, allTask, error }) => {
   );
 };
 
-NumberOfTaskByMonth.propTypes = {
+NumberOfTask.propTypes = {
   className: PropTypes.string,
-  allTask: PropTypes.array,
+  todayTask: PropTypes.array,
+  yesterdayTask: PropTypes.array,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
-export default NumberOfTaskByMonth;
+export default NumberOfTask;

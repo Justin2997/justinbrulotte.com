@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
-/* eslint-disable react/no-array-index-key */
+
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';

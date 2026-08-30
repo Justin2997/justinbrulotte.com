@@ -1,0 +1,35 @@
+name: Dashboard CI
+
+on:
+  pull_request:
+    paths:
+      - dashboard/**
+      - .github/workflows/dashboard-ci.yml
+  push:
+    branches:
+      - master
+    paths:
+      - dashboard/**
+      - .github/workflows/dashboard-ci.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: dashboard/yarn.lock
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn lint
+      - run: yarn build
+        env:
+          CI: true

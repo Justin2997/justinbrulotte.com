@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+
 import { useEffect, useState } from 'react';
 
 function ensureArray(input) {
@@ -42,7 +42,7 @@ async function fetchDashboardData(endpoint) {
 }
 
 function getDefaultEndpoint() {
-  return process.env.REACT_APP_TRELLO_DASHBOARD_ENDPOINT || '/api/trello-dashboard';
+  return import.meta.env.REACT_APP_TRELLO_DASHBOARD_ENDPOINT || '/api/trello-dashboard';
 }
 
 export default function useTrelloTasks() {
@@ -84,7 +84,6 @@ export default function useTrelloTasks() {
         setLabelListsOfWeek([]);
         setWeekGoals([]);
         setError(hookError);
-        console.error('Dashboard Trello fetch failed', hookError);
       }
     }
 

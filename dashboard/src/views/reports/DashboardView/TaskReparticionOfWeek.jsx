@@ -1,8 +1,8 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable max-len */
-/* eslint-disable object-shorthand */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
+
+
+
+
+
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TaskReparticion = ({ className, labelLists, error }) => {
+const TaskReparticionOfWeek = ({ className, labelLists, error }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -45,11 +45,11 @@ const TaskReparticion = ({ className, labelLists, error }) => {
   if (labelLists.length === 0) {
     return (
       <Card className={clsx(classes.root, className)}>
-        <CardHeader title="Task categories — past 30 days" />
+        <CardHeader title="Task categories — past week" />
         <Divider />
         <CardContent>
           <Typography color="textSecondary" variant="body2">
-            {error ? 'Categories are unavailable right now.' : 'No task categories in the past 30 days.'}
+            {error ? 'Categories are unavailable right now.' : 'No task categories this week.'}
           </Typography>
         </CardContent>
       </Card>
@@ -129,7 +129,7 @@ const TaskReparticion = ({ className, labelLists, error }) => {
     <Card
       className={clsx(classes.root, className)}
     >
-      <CardHeader title="Task categories — past 30 days" />
+      <CardHeader title="Task categories — past week" />
       <Divider />
       <CardContent>
         <Box
@@ -146,10 +146,10 @@ const TaskReparticion = ({ className, labelLists, error }) => {
   );
 };
 
-TaskReparticion.propTypes = {
+TaskReparticionOfWeek.propTypes = {
   className: PropTypes.string,
   labelLists: PropTypes.array,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
 };
 
-export default TaskReparticion;
+export default TaskReparticionOfWeek;

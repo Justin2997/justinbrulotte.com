@@ -1,5 +1,5 @@
-/* eslint-disable no-mixed-operators */
-/* eslint-disable no-bitwise */
+
+
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
