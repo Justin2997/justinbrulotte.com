@@ -1,0 +1,25 @@
+# Justin Brûlotte
+
+> Justin Brûlotte is an AI developer and product builder working across voice agents, LLM infrastructure, event technology, SaaS, and mobile robotics.
+
+This is Justin's bilingual portfolio. It documents selected work, current roles, engineering experience, awards, and public projects. Claims should be checked against the linked primary or institutional sources on the relevant page.
+
+## Official pages
+
+- [English portfolio](https://justinbrulotte.ca/): Selected work, engineering experience, and biography.
+- [French portfolio](https://justinbrulotte.ca/fr.html): Réalisations, expérience en ingénierie et biographie.
+- [LinkedIn](https://www.linkedin.com/in/justinbrulotte/): Professional profile.
+- [GitHub](https://github.com/Justin2997): Public software repositories.
+
+## Selected work
+
+- [Evenix](https://evenix.app): Event operations platform for mobile check-in, contactless wristbands, attendance tracking, emergency workflows, and cashless experiences.
+- [TrouveTonChar](https://www.trouvetonchar.ca): Vehicle discovery tool that helps buyers clarify needs and compare suitable options.
+- [ARLYX](https://arlyx.com): Mobile robotics product work combining autonomy, field operations, and practical software.
+
+## Entity
+
+- Name: Justin Brûlotte
+- Primary domain: https://justinbrulotte.ca/
+- Languages: English and French
+- Fields: Artificial intelligence, software engineering, event technology, SaaS, robotics
