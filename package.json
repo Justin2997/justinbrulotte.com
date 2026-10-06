@@ -2,5 +2,8 @@
   "name": "justinbrulotte.com",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {}
 }
